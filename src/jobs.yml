@@ -1,0 +1,201 @@
+# Job configuration file:
+# This is where all the SERVER jobs are defined.
+# Server jobs pay money from the server, custom jobs pay from the job creator.
+# ---------
+# Jobs must follow the following format:
+#  jobs:
+#    EXAMPLE:                                                        <- Job name MUST be UPPERCASE
+#      maxplayers: 0                                 <- Maximum # of players who can have this job
+#      break:                                       <- Blocks listed below will payout when broken
+#        <blockID>: <value>         <- <blockID>=ID of block broken , <value>=Amount to be paid
+#      place:                                       <- Blocks listed below will payout when placed
+#        <blockID>: <value>         <- <blockID>=ID of block placed , <value>=Amount to be paid
+#      mobs:                                              <- Mobs listed below will payout on kill
+#        <mobtype>: <value>            <- <mobtype>=Can be found below , <value>=Amount to be paid
+#      fish:                                              <- Mobs listed below will payout on kill
+#        <fishName>: <value>          <- <fishName>=Can be found below , <value>=Amount to be paid
+#      tools:                                <- Tools listed will multiply payout values when used
+#        <toolID>: <multiplierValue>        <- I think I've told you this enough times already.
+#      craft:                                       <- Items listed below will payout when created
+#        <itemID>: <value>                                     <- <itemID> = ID of item CREATED
+#      brew:                    <- Items listed below will payout when consumed in a brewing stand
+#        <itemID>: <value>                               <- <itemID> = ID of brewing ingredient
+#      smelt:                                          <- Items blahblah when smelted with furnace
+#        <itemID>: <value>                        <- <itemID> = ID of item you put INTO furnace
+#      enchant:             <- Enchanting pays by the level, so it's easier than the rest of these
+#        active: <true|false>               <- Whether or not this job counts as an enchanting job
+#        payPerLevel: <value>                                  <- Amount to pay per expended level
+#      worlds:                  <- Players will only be paid if they're in one of the worlds below
+#      - <worldname>                                               <- <worldname>= name of a world
+# NOTE: Jobnames and Items (ID_xx, MOBTYPE) MUST BE UPPERCASE. Everything else is lowercase. No
+#   exceptions. Failure to follow this will result in the plugin failing.
+# SECOND NOTE: You also need to have ALL of the fields listed. Failure will blahblahblah. I 
+#   already said that.
+# This is a link to the accepted values list:
+# http://dev.bukkit.org/bukkit-plugins/minejobs/pages/configuration-help/accepted-job-values/
+jobs:
+  MINER:
+    maxplayers: 0
+    break:
+      STONE: 0.25
+      GRAVEL: 0.25
+      GOLD_ORE: 5
+      IRON_ORE: 7
+      COAL_ORE: 3
+      LAPIS_ORE: 15
+      MOSSY_COBBLESTONE: 5
+      OBSIDIAN: 10
+      DIAMOND_ORE: 20
+      REDSTONE_ORE: 9
+      SMOOTH_BRICK: 3
+      EMERALD_ORE: 25
+    place: {}
+    mobs: {}
+    fish: {}
+    tools: {}
+    craft: {}
+    brew: {}
+    smelt: {}
+    enchant:
+      active: false
+      payPerLevel: 0
+    worlds:
+    - world
+    - world_nether
+    - world_the_end
+    pkl: false
+  FARMER:
+    maxplayers: 0
+    break:
+      GRASS: 0.01
+      BROWN_MUSHROOM: 1
+      RED_MUSHROOM: 1
+      WHEAT: 5
+      CACTUS: 3
+      SUGAR_CANE_BLOCK: 4
+      PUMPKIN: 7
+      MELON_BLOCK: 7
+      CARROT: 7
+      POTATO: 7
+    place: {}
+    mobs: {}
+    fish: {}
+    tools: {}
+    craft: {}
+    brew: {}
+    smelt: {}
+    enchant:
+      active: false
+      payPerLevel: 0
+    worlds:
+    - world
+    - world_nether
+    - world_the_end
+    pkl: false
+  LUMBERMAN:
+    maxplayers: 0
+    break:
+      SAPLING: 1
+      LOG: 5
+    place: {}
+    mobs: {}
+    fish: {}
+    tools: {}
+    craft: {}
+    brew: {}
+    smelt: {}
+    enchant:
+      active: false
+      payPerLevel: 0
+    worlds:
+    - world
+    - world_nether
+    - world_the_end
+    pkl: false
+  BUILDER:
+    maxplayers: 0
+    break: {}
+    place:
+      STONE: 1
+      DIRT: 0.10
+      COBBLESTONE: 0.10
+      WOOD: 1
+      LOG: 2
+      GLASS: 2
+      SANDSTONE: 1
+      STONE_PLATE: 2
+      BRICK: 3
+      MOSSY_COBBLESTONE: 2
+      OBSIDIAN: 5
+    mobs: {}
+    fish: {}
+    tools: {}
+    craft: {}
+    brew: {}
+    smelt: {}
+    enchant:
+      active: false
+      payPerLevel: 0
+    worlds:
+    - world
+    - world_nether
+    - world_the_end
+    pkl: false
+  HUNTER:
+    maxplayers: 0
+    break: {}
+    place: {}
+    mobs: 
+      CHICKEN: 2
+      COW: 2
+      MUSHROOM_COW: 10
+      PIG: 2
+      SHEEP: 2
+      SQUID: 2
+    fish: {}
+    tools: {}
+    craft: {}
+    brew: {}
+    smelt: {}
+    enchant:
+      active: false
+      payPerLevel: 0
+    worlds:
+    - world
+    - world_nether
+    - world_the_end
+    pkl: false
+  DEMONSLAYER:
+    maxplayers: 0
+    break: {}
+    place: {}
+    mobs: 
+      BLAZE: 10
+      CAVE_SPIDER: 3
+      CREEPER: 7
+      ENDERMAN: 10
+      ENDER_DRAGON: 2000
+      GHAST: 15
+      MAGMA_CUBE: 15
+      PIG_ZOMBIE: 2
+      PLAYER: 50
+      SILVERFISH: 1
+      SKELETON: 5
+      SLIME: 2
+      SPIDER: 5
+      WITCH: 20
+      WITHER: 2000
+      ZOMBIE: 5
+    fish: {}
+    tools: {}
+    craft: {}
+    brew: {}
+    smelt: {}
+    enchant:
+      active: false
+      payPerLevel: 0
+    worlds:
+    - world
+    - world_nether
+    - world_the_end
+    pkl: false

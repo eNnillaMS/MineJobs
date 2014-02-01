@@ -1,0 +1,5 @@
+# Sign config zone
+# Modify at your own risk.
+signs:
+  get: {}
+  quit: {}

@@ -1,0 +1,109 @@
+name: MineJobs
+main: com.hotmail.hboutilier1996.MineJobs.MineJobs
+version: 3.0.4
+depend: [Vault]
+description: This is a complete jobs economy plugin for Minecraft. See http://dev.bukkit.org/bukkit-plugins/minejobs/ for more information.
+author: eNnillaMS
+website: http://dev.bukkit.org/bukkit-plugins/minejobs/
+commands:
+  mj:
+    description: This is the help command.
+    usage: "Usage: /mj <usage>"
+    permission: MineJobs.player.use
+    permission-message: You don't have permission to read this.
+  mja:
+    description: Shows Admin help for the plugin.
+    usage: "Usage: /mja <usage>"
+    permission: Minejobs.admin.use
+    permission-message: You don't have permission to read this.
+  mjc:
+    description: Shows Custom Job help for the plugin.
+    usage: "Usage: /mjc <usage>"
+    permission: Minejobs.customs.use
+    permission-message: You don't have permission to read this.
+permissions:
+  MineJobs.player.use:
+      description: Allows players to use /mj
+      default: true
+  MineJobs.admin.use:
+      description: Allows players to use /mja
+      default: true
+  MineJobs.customs.use:
+      description: Allows players to use /mjc
+      default: true
+  MineJobs.*:
+    description: Gives all permissions for plugin.
+    default: op
+    children:
+      MineJobs.player.*: true
+      MineJobs.admin.*: true
+      MineJobs.customs.*: true
+      MineJobs.signs.*: true
+  MineJobs.player.*:
+    description: Gives all basic plgin permissions.
+    default: true
+    children:
+      MineJobs.player.use: true
+      MineJobs.player.help: true
+      MineJobs.player.getJob: true
+      MineJobs.player.getJob.others: true
+      MineJobs.player.quitJob: true
+      MineJobs.player.quitJob.others: true
+      MineJobs.player.listJobs: true
+      MineJobs.player.info: true
+  MineJobs.admin.*:
+    description: Gives all admin permissions.
+    default: op
+    children:
+      MineJobs.admin.use: true
+      MineJobs.admin.help: true
+      MineJobs.admin.create: true
+      MineJobs.admin.upgrade: true
+      MineJobs.admin.delete: true
+      MineJobs.admin.rename: true
+      MineJobs.admin.setMax: true
+      MineJobs.admin.addObj: true
+      MineJobs.admin.delObj: true
+      MineJobs.admin.editObj: true
+      MineJobs.admin.addWorld: true
+      MineJobs.admin.rmWorld: true
+  MineJobs.customs.*:
+    description: Gives all permissions needed for using custom jobs.
+    default: false
+    children:
+      MineJobs.customs.use: true
+      MineJobs.customs.help: true
+      MineJobs.customs.create: true
+      MineJobs.customs.delete: true
+      MineJobs.customs.rename: true
+      MineJobs.customs.setOwner: true
+      MineJobs.customs.setMax: true
+      MineJobs.customs.addObj: true
+      MineJobs.customs.delObj: true
+      MineJobs.customs.editObj: true
+      MineJobs.customs.addWorld: true
+      MineJobs.customs.rmWorld: true
+      MineJobs.customs.lock: true
+      MineJobs.customs.invite: true
+      MineJobs.customs.kick: true
+      MineJobs.customs.delete.others: true
+      MineJobs.customs.rename.others: true
+      MineJobs.customs.setOwner.others: true
+      MineJobs.customs.setMax.others: true
+      MineJobs.customs.addObj.others: true
+      MineJobs.customs.delObj.others: true
+      MineJobs.customs.editObj.others: true
+      MineJobs.customs.addWorld.others: true
+      MineJobs.customs.rmWorld.others: true
+      MineJobs.customs.lock.others: true
+      MineJobs.customs.invite.others: true
+      MineJobs.customs.kick.others: true
+  MineJobs.signs.*:
+    description: Gives all permissions needed for making job signs.
+    default: false
+    children:
+      MineJobs.signs.makeGetSign: true
+      MineJobs.signs.makeQuitSign: true
+      MineJobs.signs.useGetSign: true
+      MineJobs.signs.useQuitSign: true
+      MineJobs.signs.breakSign: true

@@ -1,0 +1,36 @@
+#  Minejobs Config File
+#  Version 3.0.4
+#  Warning: CaSe-SeNsItIvE
+#  Basic functionality toggles:                   <- Enabling these will make more cool stuff work.
+##
+# Currently supported locales: EN
+# use_signs must be true or false
+# customJobs must be true or false
+# pklosses.enable can be "always", "never", "job"
+# pklosses.loss must be a number, the amount to take from the player who died in PvP
+# spawnerCash must be true or false. Defines whether or not to pay for Spawner Mob kills.
+# maxjobs defines the maximum jobs a person can have. Must be a number; 0 is infinite.
+##
+
+locale: EN
+use_signs: false
+customJobs: false
+pklosses:  
+    enable: never
+    loss: 50
+spawnerCash: false
+maxjobs: 3
+defaultJobs: []
+forcedJobs: []
+economy:
+    active: false
+    getJob: 0
+    quitJob: 0
+    createJob: 0
+    deleteJob: 0
+    renameJob: 0
+    setJobOwner: 0
+    lockJob: 0
+    makeSign: 0
+    breakSign: 0
+breakOutput: false

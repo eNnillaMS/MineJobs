@@ -1,0 +1,37 @@
+# Custom job configuration file:
+# All jobs created by players will appear here.
+# ----------
+# Jobs must follow the following format:
+#  jobs:
+#    EXAMPLE:                                                        <- Job name MUST be UPPERCASE
+#      owner: <playerName>                               <- <playerName> = Name of the job's owner
+#      maxplayers: 0                                 <- Maximum # of players who can have this job
+#      locked: <true|false>                       <- If true, players can't join without an invite
+#      break:                                       <- Blocks listed below will payout when broken
+#        <blockID>: <value>         <- <blockID>=ID of block broken , <value>=Amount to be paid
+#      place:                                       <- Blocks listed below will payout when placed
+#        <blockID>: <value>         <- <blockID>=ID of block placed , <value>=Amount to be paid
+#      mobs:                                              <- Mobs listed below will payout on kill
+#        <mobtype>: <value>           <- <mobtype>=Can be found below , <value>=Amount to be paid
+#      fish:                                              <- Mobs listed below will payout on kill
+#        <fishName>: <value>          <- <fishName>=Can be found below , <value>=Amount to be paid
+#      tools:                                <- Tools listed will multiply payout values when used
+#        <toolID>: <multiplierValue>        <- I think I've told you this enough times already.
+#      craft:                                       <- Items listed below will payout when created
+#        <itemID>: <value>                                     <- <itemID> = ID of item CREATED
+#      brew:                    <- Items listed below will payout when consumed in a brewing stand
+#        <itemID>: <value>                               <- <itemID> = ID of brewing ingredient
+#      smelt:                                          <- Items blahblah when smelted with furnace
+#        <itemID>: <value>                        <- <itemID> = ID of item you put INTO furnace
+#      enchant:             <- Enchanting pays by the level, so it's easier than the rest of these
+#        active: <true|false>               <- Whether or not this job counts as an enchanting job
+#        payPerLevel: <value>                                  <- Amount to pay per expended level
+#      worlds:                  <- Players will only be paid if they're in one of the worlds below
+#      - <worldname>                                               <- <worldname>= name of a world
+# NOTE: Jobnames and Items (ID_xx, MOBTYPE) MUST BE UPPERCASE. Everything else is lowercase. No
+#   exceptions. Failure to follow this will result in the plugin failing.
+# SECOND NOTE: You also need to have ALL of the fields listed. Failure will blahblahblah. I 
+#   already said that.
+# This is a link to the accepted values list:
+# http://dev.bukkit.org/bukkit-plugins/minejobs/pages/configuration-help/accepted-job-values/
+customs: {}
