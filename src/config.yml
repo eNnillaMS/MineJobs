@@ -1,29 +1,39 @@
 #  Minejobs Config File
-#  Version 3.0.4
-#  Warning: CaSe-SeNsItIvE
-#  Basic functionality toggles:                   <- Enabling these will make more cool stuff work.
-##
-# Currently supported locales: EN
-# use_signs must be true or false
-# customJobs must be true or false
-# pklosses.enable can be "always", "never", "job"
-# pklosses.loss must be a number, the amount to take from the player who died in PvP
-# spawnerCash must be true or false. Defines whether or not to pay for Spawner Mob kills.
-# maxjobs defines the maximum jobs a person can have. Must be a number; 0 is infinite.
-##
+#  Version 4.0.0
+#
+# The 'locale' variable tells the plugin what language file to read from when the
+# configuration is loading. If the file doesn't exist or is invalid, the plugin
+# will load English by default. 'UseSigns' refers to whether or not the plugin
+# should listen for JobSign interactions, creating and breaking. 'UseCustoms'
+# tells the plugin whether or not players (with the right permisisons) can make
+# custom jobs. 'useCmdEconomy', when true, charges players the amount of money
+# selected below in 'CmdEconomy' for running commands, creating signs, or breaking
+# signs. 'deathLosses' decides how often players lose money for dieing. 'enable'
+# has three options: "never", "job", and "always". "job" means it will only charge
+# players with jobs that have PKL enabled; and the others are obvious. 'loss' is
+# the amount that killed players will lose. 'spawnerMobPayout' decides whether or
+# not it's possible to get paid for killing mobs that were spawned with eggs or
+# a spawner. 'maxJobsPerPlayer' sounds rather self explanatory to me. 'defaultJobs'
+# is a list (like the ones in players.yml) of jobs that will be given to new players
+# to your server. 'forcedJobs' are the same, only you cannot quit a job on this
+# list. 'debugOutput' is not recommended for general use because it can be very
+# spammy, but enabling it will cause players to receive messages about all their
+# cash winnings (including every broken and placed block). CmdEconomy is not
+# required so long as useCmdEconomy is false.
 
 locale: EN
-use_signs: false
-customJobs: false
-pklosses:  
+useSigns: false
+useCustoms: false
+useCmdEconomy: false
+deathLosses:  
     enable: never
     loss: 50
-spawnerCash: false
-maxjobs: 3
+spawnerMobPayout: false
+maxJobsPerPlayer: 3
 defaultJobs: []
 forcedJobs: []
-economy:
-    active: false
+debugOutput: false
+CmdEconomy:
     getJob: 0
     quitJob: 0
     createJob: 0
@@ -33,4 +43,3 @@ economy:
     lockJob: 0
     makeSign: 0
     breakSign: 0
-breakOutput: false

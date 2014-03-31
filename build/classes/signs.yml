@@ -1,5 +1,30 @@
 # Sign config zone
-# Modify at your own risk.
+# Example of a sign:
+#
+# signs:
+#   sign0:
+#     x: -131.0
+#     y: 72.0
+#     z: 224.0
+#     world: world
+#     type: GET
+#     job: FARMER
+#
+# Sign names are completely irrelevant and will likely be changed with every
+# save. The items under the sign title are all required. 'x', 'y', and 'z' are
+# coordinates for the world listed in 'world'. Together the plugin makes a
+# Location class out of those 4 and lists a sign with type 'type' and job 'job'
+# at that Location. 'world' is CASE SENSITIVE. 'type' is always either GET or
+# QUIT, and must be uppercase. 'job' must be uppercase, and must list a real job.
+
+signs: {}
+
+
 signs:
-  get: {}
-  quit: {}
+  sign0:
+    x: -131.0
+    y: 72.0
+    z: 224.0
+    world: world
+    type: GET
+    job: FARMER

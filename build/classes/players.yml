@@ -1,14 +1,19 @@
 # Player list file.
 # All players who have used any part of this plugin will be listed here.
 # The following format MUST be followed.
+#
 # players:
-#   playername:                                    <- This NEEDS to be lowercase
+#   PlayerName:
 #     jobs:
-#       - JOBNAME                               <- All jobs need to be UPPERCASE
-#     invites: []                      <- Both jobs: and invites: must be there,
-#                                      whether or not they have anything listed.
+#       - JOBNAME
+#     invites: []
+#
+# PlayerNames are case sensitive, and it's therefore best to let the plugin add
+# people on it's own. JobNames need to be UpperCase, and the rest of the headings
+# must be lowercase. Both 'jobs' and 'invites' must be listed, if one is empty,
+# simply add ' []' after the colon.
 players:
-  redexprogamma:
+  RedexProGamma:
     jobs:
       - MINER
       - DEMONSLAYER

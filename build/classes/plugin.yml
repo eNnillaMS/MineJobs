@@ -1,6 +1,6 @@
 name: MineJobs
-main: com.hotmail.hboutilier1996.MineJobs.MineJobs
-version: 3.0.4
+main: info.hexanet.eNnillaMS.MineJobs.MineJobs
+version: 4.0.0
 depend: [Vault]
 description: This is a complete jobs economy plugin for Minecraft. See http://dev.bukkit.org/bukkit-plugins/minejobs/ for more information.
 author: eNnillaMS
