@@ -11,6 +11,7 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 public class jobCommands{
@@ -60,9 +61,55 @@ public class jobCommands{
         if (args.length != 2 || args[1].equalsIgnoreCase("?")){
             sender.sendMessage(clr + Lang.CommandOutput[6][0].replace("%CMD%", cmd.getName()));
         } else {
-            
+            if (sender.hasPermission("MineJobs.admin.upgrade")){
+                Job job = Jobs.get(args[1].toUpperCase());
+                if (job != null){
+                    job.Owner = "";
+                    job.Locked = false;
+                    job.IsCustom = false;
+                    Main.saveConfigs(sender);
+                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[6][1]);
+                } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
+            } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
         }
     }
+    public void delete(CommandSender sender, Command cmd, String label, String[] args){
+        if (args.length != 2 || args[1].equalsIgnoreCase("?")){
+            sender.sendMessage(clr + Lang.CommandOutput[7][0]);
+        } else {
+            Job job = Jobs.get(args[1].toUpperCase());
+            if (job != null){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delete")) || (job.IsCustom && job.Owner.equals(sender.getName()) && sender.hasPermission("MineJobs.custom.delete"))){
+                    if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[3]);
+                    for (Map.Entry<String, Player> p:Players.entrySet()){
+                        p.getValue().Jobs.remove(job.Name);
+                        p.getValue().Invites.remove(job.Name);
+                    }
+                    for (Map.Entry<Location, SignC> s:Signs.entrySet()){
+                        if (s.getValue().Job.equals(job.Name)) {
+                            s.getKey().getBlock().breakNaturally();
+                            Signs.remove(s.getKey());
+                        }
+                    }
+                    Jobs.remove(job.Name);
+                    Main.saveConfigs(sender);
+                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[7][1]);
+                } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
+            } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
+        }
+    }
+    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }*/
+    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }*/
+    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }*/
+    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }*/
     /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
         
     }*/
