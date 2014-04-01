@@ -72,12 +72,10 @@ commands:
         cu: "Correct Usage:  /mja upgrade <jobName>"
         success: "Job '%JOB%' successfully upgraded!"
     delete:
-        cua: "Correct Usage:  /mja delete <jobName>"
-        cuc: "Correct Usage:  /mjc delete <jobName>"
+        cu: "Correct Usage:  /%CMD% delete <jobName>"
         success: "Job '%JOB%' deleted!"
     rename:
-        cua: "Correct Usage:  /mja rename <jobName> <newJobName>"
-        cuc: "Correct Usage:  /mjc rename <jobName> <newJobName>"
+        cu: "Correct Usage:  /%CMD% rename <jobName> <newJobName>"
         success: "Job '%JOB%' successfully renamed as '%JOB2%'."
     setmax:
         cua: "Correct Usage:  /mja setmax <jobName> <newMaxPlayers>"

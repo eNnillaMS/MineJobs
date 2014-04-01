@@ -11,7 +11,6 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 public class jobCommands{
@@ -59,7 +58,7 @@ public class jobCommands{
     }
     public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
         if (args.length != 2 || args[1].equalsIgnoreCase("?")){
-            sender.sendMessage(clr + Lang.CommandOutput[6][0].replace("%CMD%", cmd.getName()));
+            sender.sendMessage(clr + Lang.CommandOutput[6][0]);
         } else {
             if (sender.hasPermission("MineJobs.admin.upgrade")){
                 Job job = Jobs.get(args[1].toUpperCase());
@@ -68,14 +67,14 @@ public class jobCommands{
                     job.Locked = false;
                     job.IsCustom = false;
                     Main.saveConfigs(sender);
-                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[6][1]);
+                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[6][1].replace("%JOB%", job.Name));
                 } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
             } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
         }
     }
     public void delete(CommandSender sender, Command cmd, String label, String[] args){
         if (args.length != 2 || args[1].equalsIgnoreCase("?")){
-            sender.sendMessage(clr + Lang.CommandOutput[7][0]);
+            sender.sendMessage(clr + Lang.CommandOutput[7][0].replace("%CMD%", cmd.getName()));
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null){
@@ -93,14 +92,14 @@ public class jobCommands{
                     }
                     Jobs.remove(job.Name);
                     Main.saveConfigs(sender);
-                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[7][1]);
+                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[7][1].replace("%JOB%", job.Name));
                 } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
             } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
         }
     }
-    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+    public void rename(CommandSender sender, Command cmd, String label, String[] args){
         
-    }*/
+    }
     /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
         
     }*/

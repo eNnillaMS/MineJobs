@@ -79,11 +79,15 @@ public class Lang {
                 }, {//5 - create
                     get(lang, "commands.create.cu"),//0
                     get(lang, "commands.create.success")
-                }, {//4 - upgrade
+                }, {//6 - upgrade
                     get(lang, "commands.upgrade.cu"),//0
                     get(lang, "commands.upgrade.success")
-                }, {//4 - MainHelp
-                }, {//4 - MainHelp
+                }, {//7 - delete
+                    get(lang, "commands.delete.cu"),//0
+                    get(lang, "commands.delete.success")
+                }, {//8 - rename
+                    get(lang, "commands.rename.cu"),//0
+                    get(lang, "commands.rename.success")
                 }, {//4 - MainHelp
                 }, {//4 - MainHelp
                 }, {//4 - MainHelp
