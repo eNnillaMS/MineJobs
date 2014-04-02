@@ -11,6 +11,7 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 public class jobCommands{
@@ -78,8 +79,10 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delete")) || (job.IsCustom && job.Owner.equals(sender.getName()) && sender.hasPermission("MineJobs.custom.delete"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delete")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delete"))){
                     if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[3]);
+                    Config.ForcedJobs.remove(job.Name);
+                    Config.DefaultJobs.remove(job.Name);
                     for (Map.Entry<String, Player> p:Players.entrySet()){
                         p.getValue().Jobs.remove(job.Name);
                         p.getValue().Invites.remove(job.Name);
@@ -98,11 +101,48 @@ public class jobCommands{
         }
     }
     public void rename(CommandSender sender, Command cmd, String label, String[] args){
-        
+        if (args.length != 3 || args[1].equalsIgnoreCase("?")){
+            sender.sendMessage(clr + Lang.CommandOutput[8][0].replace("%CMD%", cmd.getName()));
+        } else {
+            Job job = Jobs.get(args[1].toUpperCase());
+            if (job != null){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.rename")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.rename"))){
+                    if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[4]);
+                    for (Map.Entry<String, Player> p:Players.entrySet()){
+                        if (p.getValue().Jobs.remove(job.Name)) p.getValue().Jobs.add(args[2].toUpperCase());
+                        if (p.getValue().Invites.remove(job.Name)) p.getValue().Invites.add(args[2].toUpperCase());
+                    }
+                    Sign o;
+                    for (Map.Entry<Location, SignC> s:Signs.entrySet()){
+                        if (s.getValue().Job.equals(job.Name)){
+                            o = (Sign) s.getKey().getBlock();
+                            o.setLine(2, args[2].toUpperCase());
+                            s.getValue().Job = args[2].toUpperCase();
+                        }
+                    }
+                    if (Config.ForcedJobs.remove(job.Name)) Config.ForcedJobs.add(args[2].toUpperCase());
+                    if (Config.DefaultJobs.remove(job.Name)) Config.DefaultJobs.add(args[2].toUpperCase());
+                    job.Name = args[2].toUpperCase();
+                    Main.saveConfigs(sender);
+                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[8][1].replace("%JOB%", args[1].toUpperCase()).replace("%JOB2%", job.Name));
+                } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
+            } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
+        }
     }
-    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
-        
-    }*/
+    public void setMax(CommandSender sender, Command cmd, String label, String[] args){
+        if (args.length != 3 || args[1].equalsIgnoreCase("?")){
+            sender.sendMessage(clr + Lang.CommandOutput[9][0]);
+        } else {
+            Job job = Jobs.get(args[1].toUpperCase());
+            if (job != null){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.setMax")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.setMax"))){
+                    job.MaxPlayers = Integer.valueOf(args[2]);
+                    Main.saveConfigs(sender);
+                    sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[9][1]);
+                } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
+            } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
+        }
+    }
     /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
         
     }*/

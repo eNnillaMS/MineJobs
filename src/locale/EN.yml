@@ -78,10 +78,9 @@ commands:
         cu: "Correct Usage:  /%CMD% rename <jobName> <newJobName>"
         success: "Job '%JOB%' successfully renamed as '%JOB2%'."
     setmax:
-        cua: "Correct Usage:  /mja setmax <jobName> <newMaxPlayers>"
-        cuc: "Correct Usage:  /mjc setmax <jobName> <newMaxPlayers>"
+        cu: "Correct Usage:  /%CMD% setmax <jobName> <newMaxPlayers>"
         success: "The job's max player count has been set to '%VALUE%'."
-        MustBeNumber: "Error! newMaxPlayers must be a NUMBER!"
+        
     addobj:
         cua: "Correct Usage:  /mja addObj <jobName> <type:item:value> [...]"
         cuc: "Correct Usage:  /mjc addObj <jobName> <type:item:value> [...]"

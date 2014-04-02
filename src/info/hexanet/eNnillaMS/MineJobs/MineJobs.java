@@ -73,10 +73,32 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
     }
     @Override public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         if (cmd.getName().equalsIgnoreCase("minejobs")){
-            //PLUGININFOHERE
+            String a = ChatColor.RED + "false", b = ChatColor.RED + "false";
+            if (Config.UseSigns) a = ChatColor.GREEN + "true ";
+            if (Config.UseCustoms) b = ChatColor.GREEN + "true ";
+            sender.sendMessage(new String[]{
+                ChatColor.GREEN + ".oOo___________________MineJobs___________________oOo.",
+                ChatColor.GOLD  + "  Version: " + ChatColor.BLUE + this.getDescription().getVersion(),
+                ChatColor.GOLD  + "  Authors: " + ChatColor.RED + this.getDescription().getAuthors(),
+                ChatColor.GOLD  + "  Signs enabled: " + a + "     Customs enabled: " + b,
+                ChatColor.WHITE + "  Use \"/mj help\" for help.",
+                ChatColor.GREEN + ".oOo______________________________________________oOo."
+            });
         } else if (!cmd.getName().equalsIgnoreCase("mjc") || Config.UseCustoms){
             jobCommands doCmd = new jobCommands(this, cmd);
-            //COMMAND HANDLING HERE
+            try {
+                switch (args[0].toLowerCase()){
+                    case "create": doCmd.create(sender, cmd, label, args); break;
+                    case "delete": doCmd.delete(sender, cmd, label, args); break;
+                    case "rename": doCmd.rename(sender, cmd, label, args); break;
+                    case "setmax": doCmd.setMax(sender, cmd, label, args); break;
+                    /*HERE*/
+                    case "upgrade": if (Config.UseCustoms) doCmd.upgrade(sender, cmd, label, args); break;
+                    default:
+                }
+            } catch (ClassCastException e) {
+                sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[9]);
+            }
         } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[1]);
         return true;
     }

@@ -88,7 +88,9 @@ public class Lang {
                 }, {//8 - rename
                     get(lang, "commands.rename.cu"),//0
                     get(lang, "commands.rename.success")
-                }, {//4 - MainHelp
+                }, {//9 - setmax
+                    get(lang, "commands.setmax.cu"),//0
+                    get(lang, "commands.setmax.success")
                 }, {//4 - MainHelp
                 }, {//4 - MainHelp
                 }, {//4 - MainHelp

@@ -6,21 +6,18 @@ description: This is a complete jobs economy plugin for Minecraft. See http://de
 author: eNnillaMS
 website: http://dev.bukkit.org/bukkit-plugins/minejobs/
 commands:
+  minejobs:
+    description: This is the plugin's info command.
+    usage: "Usage: /minejobs <usage>"
   mj:
     description: This is the help command.
     usage: "Usage: /mj <usage>"
-    permission: MineJobs.player.use
-    permission-message: You don't have permission to read this.
   mja:
     description: Shows Admin help for the plugin.
     usage: "Usage: /mja <usage>"
-    permission: Minejobs.admin.use
-    permission-message: You don't have permission to read this.
   mjc:
     description: Shows Custom Job help for the plugin.
     usage: "Usage: /mjc <usage>"
-    permission: Minejobs.customs.use
-    permission-message: You don't have permission to read this.
 permissions:
   MineJobs.player.use:
       description: Allows players to use /mj
