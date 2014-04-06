@@ -69,7 +69,8 @@ public class playerCommands implements CommandExecutor{
                     Player player = Players.get(sender.getName());
                     if (args.length == 3) player = Players.get(args[2]);
                     if (player != null){
-                        if ((player.Jobs.size() < Config.MaxJobs) || Config.MaxJobs == 0){
+                        org.bukkit.entity.Player plyr = Main.getServer().getPlayer(player.Name);
+                        if ((player.Jobs.size() < Config.getJobLimit(player, plyr)) || Config.getJobLimit(player, plyr) == 0){
                             if (!player.Jobs.contains(job.Name)){
                                 if (!job.IsCustom || !job.Locked || player.Invites.contains(job.Name)){
                                     if ((player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob")) || (!player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob"))){
@@ -121,8 +122,16 @@ public class playerCommands implements CommandExecutor{
                     else jobs += ChatColor.BLUE + j.getValue().Name + "  ";
                 } else jobs += ChatColor.GOLD + j.getValue().Name + "  ";
             }
+            String jObs = "", p;
+            if (Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)) != 0){
+                int x = Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)), y = plyr.Jobs.size(), z = (int) y / x * 100;
+                if (z <= 25) p = ChatColor.GREEN + String.valueOf(y) + "/" + String.valueOf(x);
+                else if (z > 25 && z <= 75) p = ChatColor.BLUE + String.valueOf(y) + "/" + String.valueOf(x);
+                else p = ChatColor.RED + String.valueOf(y) + "/" + String.valueOf(x);
+                jObs = ChatColor.WHITE + " - " + p;
+            }
             sender.sendMessage(ChatColor.GREEN + ".oOo___________________MineJobs___________________oOo.");
-            sender.sendMessage("  " + ChatColor.GREEN + Lang.CommandOutput[2][0]);
+            sender.sendMessage("  " + ChatColor.GREEN + Lang.CommandOutput[2][0] + jObs);
             sender.sendMessage("    " + plyrJobs);
             sender.sendMessage("  " + Lang.CommandOutput[2][1]);
             sender.sendMessage("  " + ChatColor.GREEN + Lang.CommandOutput[2][2]);
@@ -138,8 +147,16 @@ public class playerCommands implements CommandExecutor{
         if (sender.hasPermission("MineJobs.player.listJobs")){
             Player plyr = Players.get(sender.getName());
             String plyrJobs = plyr.Jobs.toString().replace("[", "").replace("]", "");
+            String jObs = "", p;
+            if (Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)) != 0){
+                int x = Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)), y = plyr.Jobs.size(), z = (int) y / x * 100;
+                if (z <= 25) p = ChatColor.GREEN + String.valueOf(y) + "/" + String.valueOf(x);
+                else if (z > 25 && z <= 75) p = ChatColor.BLUE + String.valueOf(y) + "/" + String.valueOf(x);
+                else p = ChatColor.RED + String.valueOf(y) + "/" + String.valueOf(x);
+                jObs = ChatColor.WHITE + " - " + p;
+            }
             sender.sendMessage(ChatColor.GREEN + ".oOo___________________MineJobs___________________oOo.");
-            sender.sendMessage("  " + ChatColor.GREEN + Lang.CommandOutput[2][0]);
+            sender.sendMessage("  " + ChatColor.GREEN + Lang.CommandOutput[2][0] + jObs);
             sender.sendMessage("    " + plyrJobs);
             sender.sendMessage("  " + Lang.CommandOutput[2][4]);
             sender.sendMessage("  " + Lang.CommandOutput[2][1]);

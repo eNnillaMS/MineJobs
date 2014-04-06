@@ -10,6 +10,18 @@ actions:
     SignCreate: "Job sign created!"
     SignDelete: "Sign deleted."
 commands:
+    minejobs:
+        vers: "Version: "
+        auth: "Authors: "
+        sign: "Signs enabled: "
+        cust: "Customs enabled: "
+        deat: "Death Losses: "
+        cmde: "Command Economy: "
+        smpo: "Spawned Mob Pay: "
+        dbgo: "Debug Output: "
+        defj: "Default Jobs: "
+        forj: "Forced Jobs: "
+        help: "Use \"/mj help\" for help."
     getJob:
         cu: "Correct Usage:  /mj getJob <jobName> [playerName]"
         success: "Your job list is now: "
@@ -101,6 +113,7 @@ commands:
         BadBool: "Error! newValue must be either 'true' or 'false'!"
         BadItem: "Error! Modifiable items include 'active' and 'payPerLevel'."
         MustBeNumber: "Error! Value must be a number!"
+    setenchant: ""
     addworld:
         cua: "Correct Usage:  /mja addWorld <jobName> <worldName> [...]"
         cuc: "Correct Usage:  /mjc addWorld <jobName> <worldName> [...]"
@@ -109,24 +122,22 @@ commands:
         cua: "Correct Usage:  /mja rmWorld <jobName> <worldName>"
         cuc: "Correct Usage:  /mjc rmWorld <jobName> <worldName>"
         success: "World '%WORLD%' removed from job '%JOB%'."
+    togglePDL: ""
+    setOwner:
+        cu: "Correct Usage:  /mjc setOwner <jobName> <playerName>"
+        success: "Ownership of job '%JOB%' has been passed to %PLAYER%!"
     lock:
         cu: "Correct Usage:  /mjc lock <jobName>"
         success1: "Job opportunities have been set to invite only."
         success2: "Job opportunities have been set to open."
-    invite:
-        cu: "Correct Usage:  /mjc invite <jobName> <playerName>"
-        success: "Player %PLAYER% has been invited to job!"
     kick:
         cu: "Correct Usage:  /mjc kick <playerName> <jobName>"
         success: "Player has been fired."
         PlayerNotOnJob: "Error! Player doesn't have that job!"
         PlayerNotListed: "Error! That player doesn't exist!"
-    setOwner:
-        cu: "Correct Usage:  /mjc setOwner <jobName> <playerName>"
-        success: "Ownership of job '%JOB%' has been passed to %PLAYER%!"
-    reload:
-        Success: "Plugin was successfully reloaded."
-        Failed: "Plugin reloading failed..."
+    invite:
+        cu: "Correct Usage:  /mjc invite <jobName> <playerName>"
+        success: "Player %PLAYER% has been invited to job!"
     aHelp:
         Ecreate: "  /mja create <jobName>"
         create: "    - Creates a new server job."
@@ -177,6 +188,10 @@ commands:
         Ekick: "  /mjc kick <playerName> <jobName>"
         kick: "    - Kicks a player from your job."
         more: "  /mjc <command> ?  - Help for <command>."
+        
+    reload:
+        Success: "Plugin was successfully reloaded."
+        Failed: "Plugin reloading failed..."
 mainErrors:
     NoVault: "[MineJobs] - Disabled due to dependancy (Vault) not being found!"
     CustomsDisabledWarning: "Warning! Plugin has custom jobs diabled!"

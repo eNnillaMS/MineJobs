@@ -73,15 +73,24 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
     }
     @Override public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         if (cmd.getName().equalsIgnoreCase("minejobs")){
-            String a = ChatColor.RED + "false", b = ChatColor.RED + "false";
+            String a = ChatColor.RED + "false", b = ChatColor.RED + "false", c = ChatColor.RED + "OFF  ", d = ChatColor.RED + "false", 
+                    e = ChatColor.RED + "false", f = ChatColor.RED + "false";
             if (Config.UseSigns) a = ChatColor.GREEN + "true ";
             if (Config.UseCustoms) b = ChatColor.GREEN + "true ";
+            if (Config.UseDeathLosses.equalsIgnoreCase("job")) c = ChatColor.BLUE + "JOBS "; else if (Config.UseDeathLosses.equalsIgnoreCase("always")) c = ChatColor.GREEN + "ON   ";
+            if (Config.UseCmdEconomy) d = ChatColor.GREEN + "true ";
+            if (Config.SpawnerMobPayout) e = ChatColor.GREEN + "true ";
+            if (Config.DebugOutput) f = ChatColor.GREEN + "true ";
             sender.sendMessage(new String[]{
                 ChatColor.GREEN + ".oOo___________________MineJobs___________________oOo.",
-                ChatColor.GOLD  + "  Version: " + ChatColor.BLUE + this.getDescription().getVersion(),
-                ChatColor.GOLD  + "  Authors: " + ChatColor.RED + this.getDescription().getAuthors(),
-                ChatColor.GOLD  + "  Signs enabled: " + a + "     Customs enabled: " + b,
-                ChatColor.WHITE + "  Use \"/mj help\" for help.",
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[0] + ChatColor.BLUE + this.getDescription().getVersion(),
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[1] + ChatColor.RED + this.getDescription().getAuthors(),
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[2] + a + "     " + Lang.MineJobOutput[3] + b,
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[4] + c + "      " + Lang.MineJobOutput[5] + d,
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[6] + e + "   " + Lang.MineJobOutput[7] + f,
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[8] + Config.DefaultJobs,
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[9] + Config.ForcedJobs,
+                ChatColor.WHITE + "  " + Lang.MineJobOutput[10],
                 ChatColor.GREEN + ".oOo______________________________________________oOo."
             });
         } else if (!cmd.getName().equalsIgnoreCase("mjc") || Config.UseCustoms){
@@ -92,9 +101,25 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
                     case "delete": doCmd.delete(sender, cmd, label, args); break;
                     case "rename": doCmd.rename(sender, cmd, label, args); break;
                     case "setmax": doCmd.setMax(sender, cmd, label, args); break;
-                    /*HERE*/
+                    case "addobj": doCmd.addObj(sender, cmd, label, args); break;
+                    case "delobj": doCmd.delObj(sender, cmd, label, args); break;
+                    case "editobj": doCmd.editObj(sender, cmd, label, args); break;
+                    case "setench": doCmd.setEnchant(sender, cmd, label, args); break;
+                    case "addworld": doCmd.addWorld(sender, cmd, label, args); break;
+                    case "rmworld": doCmd.remWorld(sender, cmd, label, args); break;
+                    case "pdlt": doCmd.togglePDL(sender, cmd, label, args); break;
+                    case "setowner": if (Config.UseCustoms) doCmd.setOwner(sender, cmd, label, args); break;
+                    case "togglelock": if (Config.UseCustoms) doCmd.toggleLock(sender, cmd, label, args); break;
+                    case "kick": if (Config.UseCustoms) doCmd.kickPlayer(sender, cmd, label, args); break;
+                    case "invite": if (Config.UseCustoms) doCmd.invitePlayer(sender, cmd, label, args); break;
                     case "upgrade": if (Config.UseCustoms) doCmd.upgrade(sender, cmd, label, args); break;
+                    case "reload": if (cmd.getName().equalsIgnoreCase("mja") && sender.hasPermission("MineJobs.admin.reload")){ if (loadConfigs()) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[23][0]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[23][1]);} else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]); break;
                     default:
+                        if (cmd.getName().equalsIgnoreCase("mja")){
+                            doCmd.showHelpA(sender, cmd, label, args);
+                        } else if (cmd.getName().equalsIgnoreCase("mjc")){
+                            doCmd.showHelpC(sender, cmd, label, args);
+                        } break;
                 }
             } catch (ClassCastException e) {
                 sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[9]);
@@ -157,7 +182,6 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
             String pklYN; try { pklYN = mainConf.getString("deathLosses.enable").toLowerCase(); } catch (Exception ex){ pklYN = "never"; backup[0] = 1; errors += Lang.ConfigErrors[8]; }
             double pklCash; try { pklCash = mainConf.getDouble("deathLosses.loss"); } catch (Exception ex){ pklCash = 0; backup[0] = 1; errors += Lang.ConfigErrors[9]; }
             boolean spawnerCash; try { spawnerCash = mainConf.getBoolean("spawnerMobPayout"); } catch (Exception ex){ spawnerCash = false; backup[0] = 1; errors += Lang.ConfigErrors[5]; }
-            int maxJobs; try { maxJobs = mainConf.getInt("maxJobsPerPlayer"); } catch (Exception ex){ maxJobs = 3; backup[0] = 1; errors += Lang.ConfigErrors[10]; }
             List<String> defaults; try { defaults = mainConf.getStringList("defaultJobs"); } catch (Exception ex){ defaults = new ArrayList<>(); backup[0] = 1; errors += Lang.ConfigErrors[11]; }
             for (int i = 0; i < defaults.size(); i++) { defaults.set(i, defaults.get(i).toUpperCase()); }
             List<String> forced; try { forced = mainConf.getStringList("forcedJobs"); } catch (Exception ex){ forced = new ArrayList<>(); backup[0] = 1; errors += Lang.ConfigErrors[12]; }
@@ -165,6 +189,7 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
             boolean debugOutput; try { debugOutput = mainConf.getBoolean("debugOutput"); } catch (Exception ex){ debugOutput = false; backup[0] = 1; errors += Lang.ConfigErrors[7]; }
             boolean ecoYN; try { ecoYN = mainConf.getBoolean("UseCmdEconomy"); } catch (Exception ex){ ecoYN = false; backup[0] = 1; errors += Lang.ConfigErrors[6]; }
             double[] eco;
+            Map<String, Integer> maxJobs = new HashMap<>(); try{ for (String k:mainConf.getConfigurationSection("maxJobsPerPlayer").getKeys(false)) maxJobs.put(k, mainConf.getInt("maxJobsPerPlayer." + k)); } catch (Exception ex){ maxJobs.put("default", 3); }
             try {
                 if (ecoYN){
                     eco = new double[]{mainConf.getDouble("CmdEconomy.getJob"), mainConf.getDouble("CmdEconomy.quitJob"),
@@ -474,4 +499,7 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
     ** SOO many fewer lines of code.
     * Updated all the commands
     ** Player commands' line count went down by 1/2.
+    ** One file for both mja and mjc
+    ** Maximum jobs are now permissions based
+    * Added new command "/minejobs" that displays info about plugin and main configs.
 */

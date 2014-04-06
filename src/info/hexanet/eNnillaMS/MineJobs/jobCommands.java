@@ -32,6 +32,12 @@ public class jobCommands{
         if (cmd.getName().equalsIgnoreCase("mja")) clr = ChatColor.GOLD;
         else clr = ChatColor.BLUE;
     }
+/*HERE*/    public void showHelpA(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void showHelpC(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
     public void create(CommandSender sender, Command cmd, String label, String[] args){
         if (args.length != 2 || args[1].equalsIgnoreCase("?")){
             sender.sendMessage(clr + Lang.CommandOutput[5][0].replace("%CMD%", cmd.getName()));
@@ -63,7 +69,7 @@ public class jobCommands{
         } else {
             if (sender.hasPermission("MineJobs.admin.upgrade")){
                 Job job = Jobs.get(args[1].toUpperCase());
-                if (job != null){
+                if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
                     job.Owner = "";
                     job.Locked = false;
                     job.IsCustom = false;
@@ -78,7 +84,7 @@ public class jobCommands{
             sender.sendMessage(clr + Lang.CommandOutput[7][0].replace("%CMD%", cmd.getName()));
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
-            if (job != null){
+            if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
                 if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delete")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delete"))){
                     if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[3]);
                     Config.ForcedJobs.remove(job.Name);
@@ -105,7 +111,7 @@ public class jobCommands{
             sender.sendMessage(clr + Lang.CommandOutput[8][0].replace("%CMD%", cmd.getName()));
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
-            if (job != null){
+            if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
                 if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.rename")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.rename"))){
                     if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[4]);
                     for (Map.Entry<String, Player> p:Players.entrySet()){
@@ -134,7 +140,7 @@ public class jobCommands{
             sender.sendMessage(clr + Lang.CommandOutput[9][0]);
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
-            if (job != null){
+            if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
                 if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.setMax")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.setMax"))){
                     job.MaxPlayers = Integer.valueOf(args[2]);
                     Main.saveConfigs(sender);
@@ -143,13 +149,39 @@ public class jobCommands{
             } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
         }
     }
-    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+/*HERE*/    public void addObj(CommandSender sender, Command cmd, String label, String[] args){
         
-    }*/
-    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+    }
+/*HERE*/    public void delObj(CommandSender sender, Command cmd, String label, String[] args){
         
-    }*/
-    /*public void upgrade(CommandSender sender, Command cmd, String label, String[] args){
+    }
+/*HERE*/    public void editObj(CommandSender sender, Command cmd, String label, String[] args){
         
-    }*/
+    }
+/*HERE*/    public void setEnchant(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void addWorld(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void remWorld(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void togglePDL(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void setOwner(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void toggleLock(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void kickPlayer(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
+/*HERE*/    public void invitePlayer(CommandSender sender, Command cmd, String label, String[] args){
+        
+    }
 }
+
+// ADD TO JOB!=NULL TO FORCE COMMANDS ON PROPER JOBS                  && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))

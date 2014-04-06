@@ -29,7 +29,9 @@ deathLosses:
     enable: never
     loss: 50
 spawnerMobPayout: false
-maxJobsPerPlayer: 3
+maxJobsPerPlayer:
+    default: 3
+    mega: 5
 defaultJobs: []
 forcedJobs: []
 debugOutput: false

@@ -5,6 +5,7 @@ public class Lang {
     public String[][] CommandOutput;
     public String[] GeneralErrors;
     public String[] ConfigErrors;
+    public String[] MineJobOutput;
     
     public Lang(YamlConfiguration lang) throws NullPointerException {
         try {
@@ -19,6 +20,19 @@ public class Lang {
                 get(lang, "actions.EnchantComplete"),
                 get(lang, "actions.SignCreate"),
                 get(lang, "actions.SignDelete")
+            };
+            MineJobOutput = new String[]{
+                get(lang, "commands.minejobs.vers"),//0
+                get(lang, "commands.minejobs.auth"),
+                get(lang, "commands.minejobs.sign"),
+                get(lang, "commands.minejobs.cust"),
+                get(lang, "commands.minejobs.deat"),
+                get(lang, "commands.minejobs.cmde"),//5
+                get(lang, "commands.minejobs.smpo"),
+                get(lang, "commands.minejobs.dbgo"),
+                get(lang, "commands.minejobs.defj"),
+                get(lang, "commands.minejobs.forj"),
+                get(lang, "commands.minejobs.help")//10
             };
             CommandOutput = new String[][]{
                 {//0 - getJob
@@ -91,10 +105,22 @@ public class Lang {
                 }, {//9 - setmax
                     get(lang, "commands.setmax.cu"),//0
                     get(lang, "commands.setmax.success")
-                }, {//4 - MainHelp
-                }, {//4 - MainHelp
-                }, {//4 - MainHelp
-                }, {//4 - MainHelp
+                }, {//10 - addobj
+                }, {//11 - delobj
+                }, {//12 - editobj
+                }, {//13 - setenchant
+                }, {//14 - addworld
+                }, {//15 - rmworld
+                }, {//16 - togglePDL
+                }, {//17 - setOwner
+                }, {//18 - lock
+                }, {//19 - kick
+                }, {//20 - invite
+                }, {//21 - aHelp
+                }, {//22 - cHelp
+                }, {//23 - reload
+                    get(lang, "commands.reload.Success"),//0
+                    get(lang, "commands.reload.Failed")
                 }
             };
             GeneralErrors = new String[]{
