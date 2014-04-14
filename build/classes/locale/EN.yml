@@ -9,6 +9,7 @@ actions:
     EnchantComplete: "You enchanted an item using %NUM% levels, and earned $%VALUE%."
     SignCreate: "Job sign created!"
     SignDelete: "Sign deleted."
+    Interact: "You've interacted with: %ITEM%"
 commands:
     cu: "Correct Usage:  "
     minejobs:

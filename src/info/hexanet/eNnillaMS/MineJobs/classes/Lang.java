@@ -21,7 +21,8 @@ public class Lang {
                 get(lang, "actions.PotionBrewed"),
                 get(lang, "actions.EnchantComplete"),
                 get(lang, "actions.SignCreate"),
-                get(lang, "actions.SignDelete")
+                get(lang, "actions.SignDelete"),
+                get(lang, "actions.Interact")//10
             };
             MineJobOutput = new String[]{
                 get(lang, "commands.minejobs.vers"),//0

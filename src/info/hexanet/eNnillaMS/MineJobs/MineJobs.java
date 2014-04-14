@@ -13,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -474,33 +473,3 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
         }
     }
 }
-
-//MAKE SURE ALL VARIABLES ARE USED PROPERLY
-//WE NEED TO GO BACK TO THE LANG CLASS AND FILE AFTER REWORKING THE COMMANDS
-//AND SCANNER BECAUSE OF CHANGED STRINGS.
-//ENSURE THAT ALL VARIABLE CHANGES TO CLASSES ARE FORMATTED CORRECTLY FOR
-//RECALL USE.
-
-/*           To-Do List
- - Job leveling                                                     ----------
- - Regions Support                                                  ----------
-
-[v4.0.0]
-    * Modified the entire config system.
-    ** **config.yml:** Renamed 90% of the variables, made the economy section optional. You don't really need it there anymore unless it's enabled.
-    ** **players.yml:** Actually no changes here. Huh.
-    ** **jobs.yml:** Job types no longer need to be listed if they're empty; nor does anything else. 'maxplayers' defaults to unlimited. 'pkl' will default to false. 'worlds' defaults to accepting all worlds.
-    ** **customJobs.yml:** Same as with jobs.yml. 'locked' defaults to false. Important note: Custom Jobs MUST have a listed owner. Otherwise payouts will throw errors.
-    ** **signs.yml:** I actually made a system for this one. Love it.
-    ** locale/**EN.yml:** Completely reorganized. 100% guaruntee you'll need to regenerate this just like the rest.
-    ** locale/**template.yml:** You can get rid of this now. It's trash.
-    * Updated all the event handlers.
-    ** Added checks where I previously missed checks.
-    ** **Fixed the issue with protected land money glitches.**
-    ** SOO many fewer lines of code.
-    * Updated all the commands
-    ** Player commands' line count went down by 1/2.
-    ** One file for both mja and mjc
-    ** Maximum jobs are now permissions based
-    * Added new command "/minejobs" that displays info about plugin and main configs.
-*/

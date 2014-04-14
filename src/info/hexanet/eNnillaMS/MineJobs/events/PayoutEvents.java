@@ -5,7 +5,6 @@ import info.hexanet.eNnillaMS.MineJobs.classes.Job;
 import info.hexanet.eNnillaMS.MineJobs.classes.Lang;
 import info.hexanet.eNnillaMS.MineJobs.classes.Player;
 import info.hexanet.eNnillaMS.MineJobs.classes.SignC;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.ChatColor;
@@ -42,6 +41,7 @@ public class PayoutEvents implements Listener {
     @EventHandler(priority = EventPriority.MONITOR) public void BlockBroken(BlockBreakEvent event) {
         org.bukkit.entity.Player plyr = event.getPlayer();
         Player player = Players.get(plyr.getName());
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getBlock().getType().toString() + ":" + event.getBlock().getData()));
         if(!plyr.getGameMode().equals(GameMode.CREATIVE) && player != null){
             for (String jobS:player.Jobs){
                 Job job = Jobs.get(jobS.toUpperCase());
@@ -62,6 +62,7 @@ public class PayoutEvents implements Listener {
     @EventHandler(priority = EventPriority.MONITOR) public void BlockPlaced(BlockPlaceEvent event){
         org.bukkit.entity.Player plyr = event.getPlayer();
         Player player = Players.get(plyr.getName());
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getBlock().getType().toString() + ":" + event.getBlock().getData()));
         if(!plyr.getGameMode().equals(GameMode.CREATIVE) && player != null){
             for (String jobS:player.Jobs) {
                 Job job = Jobs.get(jobS.toUpperCase());
@@ -94,6 +95,7 @@ public class PayoutEvents implements Listener {
         if(event.getEntity().getKiller() != null){
             org.bukkit.entity.Player plyr = event.getEntity().getKiller();
             Player player = Players.get(plyr.getName());
+            if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getEntityType().toString()));
             if(!plyr.getGameMode().toString().equalsIgnoreCase("CREATIVE") && player != null){
                 for (String jobS:player.Jobs) {
                     Job job = Jobs.get(jobS);
@@ -130,6 +132,7 @@ public class PayoutEvents implements Listener {
         if (event.getCaught() != null){
             org.bukkit.entity.Player plyr = event.getPlayer();
             Player player = Players.get(plyr.getName());
+            if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getCaught().getType().toString()));
             if (!plyr.getGameMode().toString().equals("CREATIVE") && player != null){
                 for (String jobS:player.Jobs){
                     Job job = Jobs.get(jobS);
@@ -146,6 +149,7 @@ public class PayoutEvents implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) public void ItemCrafted(CraftItemEvent event){
         org.bukkit.entity.Player plyr = (org.bukkit.entity.Player) event.getWhoClicked();
         Player player = Players.get(plyr.getName());
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getCurrentItem().getType().toString()));
         if (!plyr.getGameMode().equals(GameMode.CREATIVE) && player != null){
             for (String jobS:player.Jobs){
                 Job job = Jobs.get(jobS);
@@ -175,6 +179,7 @@ public class PayoutEvents implements Listener {
             }
         } catch (Exception e){ return; }
         if (plyr != null){
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getSource().getType().toString()));
             Player player = Players.get(plyr.getName());
             if(player != null){
                 for (String jobS:player.Jobs){
@@ -202,6 +207,7 @@ public class PayoutEvents implements Listener {
             }
         } catch (Exception e){ return; }
         if (plyr != null){
+            if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getContents().getIngredient().getType().toString()));
             Player player = Players.get(plyr.getName());
             if(player != null){
                 for (String jobS:player.Jobs){

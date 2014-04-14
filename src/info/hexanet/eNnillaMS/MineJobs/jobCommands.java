@@ -10,13 +10,10 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemStack;
 public class jobCommands{
     private final MineJobs Main;
     private final Conf Config;
