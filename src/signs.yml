@@ -18,13 +18,3 @@
 # QUIT, and must be uppercase. 'job' must be uppercase, and must list a real job.
 
 signs: {}
-
-
-signs:
-  sign0:
-    x: -131.0
-    y: 72.0
-    z: 224.0
-    world: world
-    type: GET
-    job: FARMER

@@ -6,9 +6,11 @@ public class Lang {
     public String[] GeneralErrors;
     public String[] ConfigErrors;
     public String[] MineJobOutput;
+    private String cu;
     
     public Lang(YamlConfiguration lang) throws NullPointerException {
         try {
+            cu = get(lang, "commands.cu");
             ActionSuccess = new String[]{
                 get(lang, "actions.BlockBroken"),//0
                 get(lang, "actions.BlockPlaced"),
@@ -36,7 +38,7 @@ public class Lang {
             };
             CommandOutput = new String[][]{
                 {//0 - getJob
-                    get(lang, "commands.getJob.cu"),//0
+                    cu + get(lang, "commands.getJob.cu"),//0
                     get(lang, "commands.getJob.success"),
                     get(lang, "commands.getJob.successOther"),
                     get(lang, "commands.getJob.TooManyPeople"),
@@ -47,7 +49,7 @@ public class Lang {
                     get(lang, "commands.getJob.AlreadyHaveOther"),
                     get(lang, "commands.getJob.LockedJobOther")
                 }, {//1 - quitJob
-                    get(lang, "commands.quitJob.cu"),//0
+                    cu + get(lang, "commands.quitJob.cu"),//0
                     get(lang, "commands.quitJob.success"),
                     get(lang, "commands.quitJob.successOther"),
                     get(lang, "commands.quitJob.DontHaveJob"),
@@ -64,7 +66,7 @@ public class Lang {
                     get(lang, "commands.listJobs.cust"),
                     get(lang, "commands.listJobs.lock")
                 }, {//3 - info
-                    get(lang, "commands.info.cu"),//0
+                    cu + get(lang, "commands.info.cu"),//0
                     get(lang, "commands.info.JobName"),
                     get(lang, "commands.info.Owner"),
                     get(lang, "commands.info.Locked"),
@@ -91,33 +93,89 @@ public class Lang {
                     get(lang, "commands.help.mjc"),
                     get(lang, "commands.help.more")
                 }, {//5 - create
-                    get(lang, "commands.create.cu"),//0
+                    cu + get(lang, "commands.create.cu"),//0
                     get(lang, "commands.create.success")
                 }, {//6 - upgrade
-                    get(lang, "commands.upgrade.cu"),//0
+                    cu + get(lang, "commands.upgrade.cu"),//0
                     get(lang, "commands.upgrade.success")
                 }, {//7 - delete
-                    get(lang, "commands.delete.cu"),//0
+                    cu + get(lang, "commands.delete.cu"),//0
                     get(lang, "commands.delete.success")
                 }, {//8 - rename
-                    get(lang, "commands.rename.cu"),//0
+                    cu + get(lang, "commands.rename.cu"),//0
                     get(lang, "commands.rename.success")
                 }, {//9 - setmax
-                    get(lang, "commands.setmax.cu"),//0
+                    cu + get(lang, "commands.setmax.cu"),//0
                     get(lang, "commands.setmax.success")
                 }, {//10 - addobj
+                    cu + get(lang, "commands.addobj.cu"),//0
+                    get(lang, "commands.addobj.success"),
+                    get(lang, "commands.addobj.MustBeNumber")
                 }, {//11 - delobj
+                    cu + get(lang, "commands.delobj.cu"),//0
+                    get(lang, "commands.delobj.success")
                 }, {//12 - editobj
+                    cu + get(lang, "commands.editobj.cu"),//0
+                    get(lang, "commands.editobj.success"),
+                    get(lang, "commands.editobj.MustBeNumber")
                 }, {//13 - setenchant
+                    cu + get(lang, "commands.setenchant.cu"),//0
+                    get(lang, "commands.setenchant.success"),
+                    get(lang, "commands.setenchant.MustBeNumber")
                 }, {//14 - addworld
+                    cu + get(lang, "commands.addworld.cu"),//0
+                    get(lang, "commands.addworld.success")
                 }, {//15 - rmworld
+                    cu + get(lang, "commands.rmworld.cu"),//0
+                    get(lang, "commands.rmworld.success")
                 }, {//16 - togglePDL
+                    cu + get(lang, "commands.togglePDL.cu"),//0
+                    get(lang, "commands.togglePDL.success"),
+                    get(lang, "commands.togglePDL.success2"),
+                    get(lang, "commands.togglePDL.error")
                 }, {//17 - setOwner
+                    cu + get(lang, "commands.setOwner.cu"),//0
+                    get(lang, "commands.setOwner.success")
                 }, {//18 - lock
+                    cu + get(lang, "commands.lock.cu"),//0
+                    get(lang, "commands.lock.success1"),
+                    get(lang, "commands.lock.success2")
                 }, {//19 - kick
+                    cu + get(lang, "commands.kick.cu"),//0
+                    get(lang, "commands.kick.success")
                 }, {//20 - invite
+                    cu + get(lang, "commands.invite.cu"),//0
+                    get(lang, "commands.invite.success")
                 }, {//21 - aHelp
+                    "  " + get(lang, "commands.create.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.create"),
+                    "  " + get(lang, "commands.upgrade.cu") + "\n    - " + get(lang, "commands.help.upgrade"),
+                    "  " + get(lang, "commands.delete.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.delete"),
+                    "  " + get(lang, "commands.rename.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.rename"),
+                    "  " + get(lang, "commands.setmax.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.setmax"),
+                    "  " + get(lang, "commands.addobj.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.addobj"),
+                    "  " + get(lang, "commands.editobj.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.editobj"),
+                    "  " + get(lang, "commands.delobj.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.delobj"),
+                    "  " + get(lang, "commands.setenchant.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.setench"),
+                    "  " + get(lang, "commands.addworld.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.addworld"),
+                    "  " + get(lang, "commands.rmworld.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.rmworld"),
+                    "  " + get(lang, "commands.togglePDL.cu").replace("%CMD%", "mja") + "\n    - " + get(lang, "commands.help.togglepdl"),
+                    "  /mja reload\n    - " + get(lang, "commands.help.reload")
                 }, {//22 - cHelp
+                    "  " + get(lang, "commands.create.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.create"),
+                    "  " + get(lang, "commands.delete.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.delete"),
+                    "  " + get(lang, "commands.rename.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.rename"),
+                    "  " + get(lang, "commands.setmax.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.setmax"),
+                    "  " + get(lang, "commands.addobj.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.addobj"),
+                    "  " + get(lang, "commands.editobj.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.editobj"),
+                    "  " + get(lang, "commands.delobj.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.delobj"),
+                    "  " + get(lang, "commands.setenchant.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.setench"),
+                    "  " + get(lang, "commands.addworld.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.addworld"),
+                    "  " + get(lang, "commands.rmworld.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.rmworld"),
+                    "  " + get(lang, "commands.togglePDL.cu").replace("%CMD%", "mjc") + "\n    - " + get(lang, "commands.help.togglepdl"),
+                    "  " + get(lang, "commands.setOwner.cu") + "\n    - " + get(lang, "commands.help.setowner"),
+                    "  " + get(lang, "commands.lock.cu") + "\n    - " + get(lang, "commands.help.lock"),
+                    "  " + get(lang, "commands.kick.cu") + "\n    - " + get(lang, "commands.help.kick"),
+                    "  " + get(lang, "commands.invite.cu") + "\n    - " + get(lang, "commands.help.invite")
                 }, {//23 - reload
                     get(lang, "commands.reload.Success"),//0
                     get(lang, "commands.reload.Failed")
@@ -134,7 +192,10 @@ public class Lang {
                 get(lang, "mainErrors.WorldNotListed"),
                 get(lang, "mainErrors.WorldExists"),
                 get(lang, "mainErrors.BadCMD"),
-                get(lang, "mainErrors.PlayerNotFound")//10
+                get(lang, "mainErrors.PlayerNotFound"),//10
+                get(lang, "mainErrors.BadType"),
+                get(lang, "mainErrors.BadArg"),
+                get(lang, "mainErrors.WorldNotFound")
             };
             ConfigErrors = new String[]{
                 get(lang, "configErrors.SaveFail"),//0

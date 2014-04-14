@@ -54,7 +54,7 @@ public class playerCommands implements CommandExecutor{
             }
             if(sender.hasPermission("MineJobs.player.info")) sender.sendMessage(Lang.CommandOutput[4][4]);
             if(sender.hasPermission("MineJobs.admin.help")) sender.sendMessage(ChatColor.GOLD + Lang.CommandOutput[4][5]);
-            if(sender.hasPermission("MineJobs.customs.help") && Config.UseCustoms) sender.sendMessage(ChatColor.BLUE + Lang.CommandOutput[4][6]);
+            if(sender.hasPermission("MineJobs.custom.help") && Config.UseCustoms) sender.sendMessage(ChatColor.BLUE + Lang.CommandOutput[4][6]);
             sender.sendMessage(Lang.CommandOutput[4][7]);
             sender.sendMessage(ChatColor.GREEN + ".oOo______________________________________________oOo.");
         } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
@@ -73,13 +73,13 @@ public class playerCommands implements CommandExecutor{
                         if ((player.Jobs.size() < Config.getJobLimit(player, plyr)) || Config.getJobLimit(player, plyr) == 0){
                             if (!player.Jobs.contains(job.Name)){
                                 if (!job.IsCustom || !job.Locked || player.Invites.contains(job.Name)){
-                                    if ((player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob")) || (!player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob"))){
+                                    if ((player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob")) || (!player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob.other"))){
                                         if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[0]);
                                         if (player.Invites.contains(job.Name)) player.Invites.remove(job.Name);
                                         player.Jobs.add(job.Name);
                                         Main.saveConfigs(sender);
-                                        if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][1]);
-                                        else sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][2].replace("%PLAYER%", player.Name));
+                                        if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][1] + player.Jobs);
+                                        else sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][2].replace("%PLAYER%", player.Name) + player.Jobs);
                                     } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
                                 } else if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][6]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][9].replace("%PLAYER%", player.Name));
                             } else if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][5]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][8].replace("%PLAYER%", player.Name));
@@ -171,7 +171,7 @@ public class playerCommands implements CommandExecutor{
                     String n, o = "", l = ChatColor.GOLD + "false", d = ChatColor.RED + "Off", p = ChatColor.GOLD + "Unlimited",
                             w = ChatColor.RED + "None", br = ChatColor.GREEN + "", pl = ChatColor.GREEN + "", mo = ChatColor.GREEN + "",
                             fi = ChatColor.GREEN + "", to = ChatColor.GREEN + "", cr = ChatColor.GREEN + "", sm = ChatColor.GREEN + "",
-                            po = ChatColor.GREEN + "", en = "";
+                            po = ChatColor.GREEN + "", en = ChatColor.GREEN + "";
                     if (job.IsCustom) n = ChatColor.BLUE + job.Name; else n = ChatColor.GOLD + job.Name;
                     if (job.IsCustom) o = " (" + Lang.CommandOutput[3][2] + job.Owner + ")";
                     if (job.Locked) l = ChatColor.RED + "true ";

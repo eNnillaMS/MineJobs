@@ -13,7 +13,10 @@
 # players with jobs that have PKL enabled; and the others are obvious. 'loss' is
 # the amount that killed players will lose. 'spawnerMobPayout' decides whether or
 # not it's possible to get paid for killing mobs that were spawned with eggs or
-# a spawner. 'maxJobsPerPlayer' sounds rather self explanatory to me. 'defaultJobs'
+# a spawner. 'maxJobsPerPlayer' is the header for permission defining. 'default'
+# is added by default to every player on the server, but you can add other maximums
+# to players and override the others by adding similar headings alongside 'default', ex. 'mega',
+# and giving the player the permission node "MineJobs.player.JobLimit.YOURHEADING". 'defaultJobs'
 # is a list (like the ones in players.yml) of jobs that will be given to new players
 # to your server. 'forcedJobs' are the same, only you cannot quit a job on this
 # list. 'debugOutput' is not recommended for general use because it can be very

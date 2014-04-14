@@ -118,8 +118,8 @@ public class PayoutEvents implements Listener {
                             if (!event.getEntity().hasMetadata("MJ:FAKE") || Config.SpawnerMobPayout){
                                 Main.econ.depositPlayer(plyr.getName(), value);
                                 if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
-                                plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[3].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", ename));
-                            } /*HERE*/
+                                plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[2].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", ename));
+                            } /*HERE - not sure why this is here anymore - PREv4.0.0*/
                         }
                     }
                 }
@@ -229,7 +229,7 @@ public class PayoutEvents implements Listener {
                     Double value = job.EnchantPay;
                     Main.econ.depositPlayer(plyr.getName(), value * event.getExpLevelCost());
                     if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value * event.getExpLevelCost());
-                    if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[7]);
+                    if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[7].replace("%NUM%", String.valueOf(event.getExpLevelCost())).replace("%VALUE%", String.valueOf(event.getExpLevelCost() * value)));
                 }
             }
         }

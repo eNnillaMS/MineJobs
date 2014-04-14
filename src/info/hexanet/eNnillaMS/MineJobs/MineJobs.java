@@ -85,9 +85,9 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
                 ChatColor.GREEN + ".oOo___________________MineJobs___________________oOo.",
                 ChatColor.GOLD  + "  " + Lang.MineJobOutput[0] + ChatColor.BLUE + this.getDescription().getVersion(),
                 ChatColor.GOLD  + "  " + Lang.MineJobOutput[1] + ChatColor.RED + this.getDescription().getAuthors(),
-                ChatColor.GOLD  + "  " + Lang.MineJobOutput[2] + a + "     " + Lang.MineJobOutput[3] + b,
-                ChatColor.GOLD  + "  " + Lang.MineJobOutput[4] + c + "      " + Lang.MineJobOutput[5] + d,
-                ChatColor.GOLD  + "  " + Lang.MineJobOutput[6] + e + "   " + Lang.MineJobOutput[7] + f,
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[2] + a + "     " + ChatColor.GOLD + Lang.MineJobOutput[3] + b,
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[4] + c + "      " + ChatColor.GOLD + Lang.MineJobOutput[5] + d,
+                ChatColor.GOLD  + "  " + Lang.MineJobOutput[6] + e + "   " + ChatColor.GOLD + Lang.MineJobOutput[7] + f,
                 ChatColor.GOLD  + "  " + Lang.MineJobOutput[8] + Config.DefaultJobs,
                 ChatColor.GOLD  + "  " + Lang.MineJobOutput[9] + Config.ForcedJobs,
                 ChatColor.WHITE + "  " + Lang.MineJobOutput[10],
@@ -95,25 +95,26 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
             });
         } else if (!cmd.getName().equalsIgnoreCase("mjc") || Config.UseCustoms){
             jobCommands doCmd = new jobCommands(this, cmd);
+            String syn; try {syn = args[0].toLowerCase();} catch (Exception ex) {syn = "?";}
             try {
-                switch (args[0].toLowerCase()){
-                    case "create": doCmd.create(sender, cmd, label, args); break;
-                    case "delete": doCmd.delete(sender, cmd, label, args); break;
-                    case "rename": doCmd.rename(sender, cmd, label, args); break;
-                    case "setmax": doCmd.setMax(sender, cmd, label, args); break;
-                    case "addobj": doCmd.addObj(sender, cmd, label, args); break;
-                    case "delobj": doCmd.delObj(sender, cmd, label, args); break;
-                    case "editobj": doCmd.editObj(sender, cmd, label, args); break;
-                    case "setench": doCmd.setEnchant(sender, cmd, label, args); break;
-                    case "addworld": doCmd.addWorld(sender, cmd, label, args); break;
-                    case "rmworld": doCmd.remWorld(sender, cmd, label, args); break;
-                    case "pdlt": doCmd.togglePDL(sender, cmd, label, args); break;
-                    case "setowner": if (Config.UseCustoms) doCmd.setOwner(sender, cmd, label, args); break;
-                    case "togglelock": if (Config.UseCustoms) doCmd.toggleLock(sender, cmd, label, args); break;
-                    case "kick": if (Config.UseCustoms) doCmd.kickPlayer(sender, cmd, label, args); break;
-                    case "invite": if (Config.UseCustoms) doCmd.invitePlayer(sender, cmd, label, args); break;
-                    case "upgrade": if (Config.UseCustoms) doCmd.upgrade(sender, cmd, label, args); break;
-                    case "reload": if (cmd.getName().equalsIgnoreCase("mja") && sender.hasPermission("MineJobs.admin.reload")){ if (loadConfigs()) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[23][0]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[23][1]);} else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]); break;
+                switch (syn){
+                    case "cr": case "create": doCmd.create(sender, cmd, label, args); break;
+                    case "dl": case "delete": doCmd.delete(sender, cmd, label, args); break;
+                    case "rn": case "rename": doCmd.rename(sender, cmd, label, args); break;
+                    case "sm": case "setmax": doCmd.setMax(sender, cmd, label, args); break;
+                    case "ao": case "addobj": doCmd.addObj(sender, cmd, label, args); break;
+                    case "do": case "delobj": doCmd.delObj(sender, cmd, label, args); break;
+                    case "eo": case "editobj": doCmd.editObj(sender, cmd, label, args); break;
+                    case "se": case "setench": doCmd.setEnchant(sender, cmd, label, args); break;
+                    case "aw": case "addworld": doCmd.addWorld(sender, cmd, label, args); break;
+                    case "rw": case "rmworld": doCmd.remWorld(sender, cmd, label, args); break;
+                    case "tp": case "togglepdl": doCmd.togglePDL(sender, cmd, label, args); break;
+                    case "so": case "setowner": if (Config.UseCustoms) doCmd.setOwner(sender, cmd, label, args); break;
+                    case "tl": case "togglelock": if (Config.UseCustoms) doCmd.toggleLock(sender, cmd, label, args); break;
+                    case "kk": case "kick": if (Config.UseCustoms) doCmd.kickPlayer(sender, cmd, label, args); break;
+                    case "iv": case "invite": if (Config.UseCustoms) doCmd.invitePlayer(sender, cmd, label, args); break;
+                    case "ug": case "upgrade": if (Config.UseCustoms) doCmd.upgrade(sender, cmd, label, args); break;
+                    case "rl": case "reload": if (cmd.getName().equalsIgnoreCase("mja") && sender.hasPermission("MineJobs.admin.reload")){ if (loadConfigs()) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[23][0]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[23][1]);} else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]); break;
                     default:
                         if (cmd.getName().equalsIgnoreCase("mja")){
                             doCmd.showHelpA(sender, cmd, label, args);
@@ -414,14 +415,14 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
                 temp[c].set(top + job.Name + ".locked", job.Locked);
             }
             temp[c].set(top + job.Name + ".maxplayers", job.MaxPlayers);
-            for (Map.Entry<String, Double> br:job.Break.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".break." + br.getKey(), Double.valueOf(br.getValue()));
-            for (Map.Entry<String, Double> br:job.Place.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".place." + br.getKey(), Double.valueOf(br.getValue()));
-            for (Map.Entry<String, Double> br:job.Mobs.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".mobs." + br.getKey(), Double.valueOf(br.getValue()));
-            for (Map.Entry<String, Double> br:job.Fish.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".fish." + br.getKey(), Double.valueOf(br.getValue()));
-            for (Map.Entry<String, Double> br:job.Tools.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".tools." + br.getKey(), Double.valueOf(br.getValue()));
-            for (Map.Entry<String, Double> br:job.Craft.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".craft." + br.getKey(), Double.valueOf(br.getValue()));
-            for (Map.Entry<String, Double> br:job.Smelt.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".smelt." + br.getKey(), Double.valueOf(br.getValue()));
-            for (Map.Entry<String, Double> br:job.Brew.entrySet()) if (!br.getKey().equals("") && Double.valueOf(br.getValue()) != 0) temp[c].set(top + job.Name + ".brew." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Break.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".break." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Place.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".place." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Mobs.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".mobs." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Fish.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".fish." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Tools.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".tools." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Craft.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".craft." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Smelt.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".smelt." + br.getKey(), Double.valueOf(br.getValue()));
+            for (Map.Entry<String, Double> br:job.Brew.entrySet()) if (!br.getKey().equals("") && br.getValue() != 0) temp[c].set(top + job.Name + ".brew." + br.getKey(), Double.valueOf(br.getValue()));
             if (job.EnchantEnabled){
                 temp[c].set(top + job.Name + ".enchant.active", job.EnchantEnabled);
                 temp[c].set(top + job.Name + ".enchant.payPerLevel", job.EnchantPay);
