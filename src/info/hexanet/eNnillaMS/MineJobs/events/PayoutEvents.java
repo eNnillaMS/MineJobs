@@ -41,19 +41,19 @@ public class PayoutEvents implements Listener {
     @EventHandler(priority = EventPriority.MONITOR) public void BlockBroken(BlockBreakEvent event) {
         org.bukkit.entity.Player plyr = event.getPlayer();
         Player player = Players.get(plyr.getName());
-        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getBlock().getType().toString() + ":" + event.getBlock().getData()));
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getBlock().getType().toString() + "#" + event.getBlock().getData()));
         if(!plyr.getGameMode().equals(GameMode.CREATIVE) && player != null){
             for (String jobS:player.Jobs){
                 Job job = Jobs.get(jobS.toUpperCase());
                 if (job != null){
                     Double value = job.Break.get(event.getBlock().getType().toString());
-                    if (value == null) value = job.Break.get(event.getBlock().getType().toString() + ":" + event.getBlock().getData());
+                    if (value == null) value = job.Break.get(event.getBlock().getType().toString() + "#" + event.getBlock().getData());
                     if (!event.isCancelled() && value != null && job.Worlds.contains(event.getBlock().getWorld().getName())){
                         Double mult = job.Tools.get(event.getPlayer().getItemInHand().getType().toString());
                         if (mult == null) mult = 1.00;
                         if (job.IsCustom && !event.getBlock().hasMetadata("MJ:".concat(event.getPlayer().getName()))) Main.econ.withdrawPlayer(job.Owner, value * mult);
                         if (!event.getBlock().hasMetadata("MJ:".concat(event.getPlayer().getName()))) Main.econ.depositPlayer(plyr.getName(), value * mult);
-                        if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[0].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getBlock().getType().toString() + ":" + event.getBlock().getData()));
+                        if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[0].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getBlock().getType().toString() + "#" + event.getBlock().getData()));
                     }
                 }
             }
@@ -62,13 +62,13 @@ public class PayoutEvents implements Listener {
     @EventHandler(priority = EventPriority.MONITOR) public void BlockPlaced(BlockPlaceEvent event){
         org.bukkit.entity.Player plyr = event.getPlayer();
         Player player = Players.get(plyr.getName());
-        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getBlock().getType().toString() + ":" + event.getBlock().getData()));
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getBlock().getType().toString() + "#" + event.getBlock().getData()));
         if(!plyr.getGameMode().equals(GameMode.CREATIVE) && player != null){
             for (String jobS:player.Jobs) {
                 Job job = Jobs.get(jobS.toUpperCase());
                 if (job != null){
                     String block = event.getBlock().getType().toString();
-                    String data = ":" + event.getBlock().getData();
+                    String data = "#" + event.getBlock().getData();
                     if ((job.Place.containsKey(block) || job.Place.containsKey(block + data)) && job.Worlds.contains(event.getBlock().getWorld().getName())){
                         boolean pay = true;
                         for (String bJob:player.Jobs){
@@ -149,13 +149,13 @@ public class PayoutEvents implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) public void ItemCrafted(CraftItemEvent event){
         org.bukkit.entity.Player plyr = (org.bukkit.entity.Player) event.getWhoClicked();
         Player player = Players.get(plyr.getName());
-        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getCurrentItem().getType().toString()));
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getCurrentItem().getType().toString() + "#" + event.getCurrentItem().getData()));
         if (!plyr.getGameMode().equals(GameMode.CREATIVE) && player != null){
             for (String jobS:player.Jobs){
                 Job job = Jobs.get(jobS);
                 if (job != null){
                     Double value = job.Craft.get(event.getCurrentItem().getType().toString());
-                    if (value == null) job.Craft.get(event.getCurrentItem().getType().toString() + ":" + event.getCurrentItem().getData());
+                    if (value == null) job.Craft.get(event.getCurrentItem().getType().toString() + "#" + event.getCurrentItem().getData());
                     if (!event.isCancelled() && value != null && job.Worlds.contains(event.getWhoClicked().getWorld().getName())){
                         if (event.isShiftClick()){
                             event.setCancelled(true);
@@ -163,7 +163,7 @@ public class PayoutEvents implements Listener {
                         }
                         Main.econ.depositPlayer(plyr.getName(), value);
                         if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
-                        if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[4].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getCurrentItem().getType().toString() + ":" + event.getCurrentItem().getData()));
+                        if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[4].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getCurrentItem().getType().toString() + "#" + event.getCurrentItem().getData()));
                     }
                 }
             }
@@ -179,18 +179,18 @@ public class PayoutEvents implements Listener {
             }
         } catch (Exception e){ return; }
         if (plyr != null){
-        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getSource().getType().toString()));
+        if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getSource().getType().toString() + "#" + event.getSource().getData()));
             Player player = Players.get(plyr.getName());
             if(player != null){
                 for (String jobS:player.Jobs){
                     Job job = Jobs.get(jobS);
                     if(job != null){
                         Double value = job.Smelt.get(event.getSource().getType().toString());
-                        if (value == null) value = job.Smelt.get(event.getSource().getType().toString() + ":" + event.getSource().getData());
+                        if (value == null) value = job.Smelt.get(event.getSource().getType().toString() + "#" + event.getSource().getData());
                         if(!event.isCancelled() && value != null && job.Worlds.contains(event.getBlock().getWorld().getName())){
                            Main.econ.depositPlayer(plyr.getName(), value);
                            if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
-                           if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[6].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getSource().getType().toString() + ":" + event.getSource().getData()));
+                           if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[6].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getSource().getType().toString() + "#" + event.getSource().getData()));
                         }
                     }
                 }
@@ -207,18 +207,18 @@ public class PayoutEvents implements Listener {
             }
         } catch (Exception e){ return; }
         if (plyr != null){
-            if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getContents().getIngredient().getType().toString()));
+            if (Config.DebugOutput) plyr.sendMessage(Lang.ActionSuccess[10].replace("%ITEM%", event.getContents().getIngredient().getType().toString() + "#" + event.getContents().getIngredient().getData()));
             Player player = Players.get(plyr.getName());
             if(player != null){
                 for (String jobS:player.Jobs){
                     Job job = Jobs.get(jobS);
                     if(job != null){
                         Double value = job.Brew.get(event.getContents().getIngredient().getType().toString());
-                        if (value == null) value = job.Brew.get(event.getContents().getIngredient().getType().toString() + ":" + event.getContents().getIngredient().getData());
+                        if (value == null) value = job.Brew.get(event.getContents().getIngredient().getType().toString() + "#" + event.getContents().getIngredient().getData());
                         if(!event.isCancelled() && value != null && job.Worlds.contains(event.getBlock().getWorld().getName())){
                            Main.econ.depositPlayer(plyr.getName(), value);
                            if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
-                           if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[7].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getContents().getIngredient().getType().toString() + ":" + event.getContents().getIngredient().getData()));
+                           if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[7].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getContents().getIngredient().getType().toString() + "#" + event.getContents().getIngredient().getData()));
                         }
                     }
                 }

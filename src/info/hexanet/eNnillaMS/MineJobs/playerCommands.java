@@ -183,14 +183,14 @@ public class playerCommands implements CommandExecutor{
                         else p = ChatColor.RED + String.valueOf(y) + "/" + String.valueOf(x);
                     }
                     if (!job.Worlds.isEmpty()) w = ChatColor.GOLD + job.Worlds.toString().replace("[", "").replace("]", "");
-                    for (Map.Entry<String, Double> a:job.Break.entrySet()) br += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
-                    for (Map.Entry<String, Double> a:job.Place.entrySet()) pl += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
-                    for (Map.Entry<String, Double> a:job.Mobs.entrySet()) mo += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
-                    for (Map.Entry<String, Double> a:job.Fish.entrySet()) fi += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
-                    for (Map.Entry<String, Double> a:job.Tools.entrySet()) to += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
-                    for (Map.Entry<String, Double> a:job.Craft.entrySet()) cr += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
-                    for (Map.Entry<String, Double> a:job.Smelt.entrySet()) sm += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
-                    for (Map.Entry<String, Double> a:job.Brew.entrySet()) po += a.getKey().replace("_", " ").replace(":", "_") + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Break.entrySet()) br += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Place.entrySet()) pl += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Mobs.entrySet()) mo += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Fish.entrySet()) fi += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Tools.entrySet()) to += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Craft.entrySet()) cr += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Smelt.entrySet()) sm += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
+                    for (Map.Entry<String, Double> a:job.Brew.entrySet()) po += a.getKey() + ": " + String.valueOf(a.getValue()) + ", ";
                     if (job.EnchantEnabled) en = ChatColor.GOLD + String.valueOf(job.EnchantPay);
                     sender.sendMessage(ChatColor.GREEN + ".oOo___________________MineJobs___________________oOo.");
                     sender.sendMessage(ChatColor.WHITE + "  " + Lang.CommandOutput[3][1] + n + o);

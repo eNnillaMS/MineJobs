@@ -9,7 +9,7 @@
 #     break:
 #       STONE: 0.25
 #       GOLD_ORE: 5
-#       CROPS.7: 0.66
+#       CROPS#7: 0.66
 #     place: {}
 #     mobs: {}
 #     fish: {}
@@ -37,7 +37,7 @@
 # default as being empty. 'break' is the payout for breaking blocks. Items listed
 # under it are listed using their entry from the Bukkit Material (or Entity) Class,
 # which sometimes results in underscores in the names. Likewise, if you need to
-# use a Data Value on a block (say, WOOL, for coloring), you can add a "." and
+# use a Data Value on a block (say, WOOL, for coloring), you can add a "#" and
 # then the value you want. Lastly, the enchant fields are used to define whether
 # or not players get paid for enchanting. 'active' is a simple boolean, and
 # 'payPerLevel' is a double. Not necessary to have in if you don't want it, and will
