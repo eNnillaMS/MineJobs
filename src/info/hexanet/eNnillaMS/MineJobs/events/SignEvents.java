@@ -49,7 +49,7 @@ public class SignEvents implements Listener {
                     plyr.sendMessage(ChatColor.GREEN + Lang.ActionSuccess[8]);
                 } else plyr.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
             } else plyr.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
-        } else Main.getLogger().severe(Lang.GeneralErrors[14].replace("%PLAYER%", event.getPlayer().getName()));
+        } else if (event.getLine(0).equalsIgnoreCase("[getajob]") || event.getLine(0).equalsIgnoreCase("[quitajob]")) Main.getLogger().severe(Lang.GeneralErrors[14].replace("%PLAYER%", event.getPlayer().getName()));
     }
     @EventHandler(priority = EventPriority.MONITOR) public void SignInteract(PlayerInteractEvent event){
         if (Config.UseSigns){

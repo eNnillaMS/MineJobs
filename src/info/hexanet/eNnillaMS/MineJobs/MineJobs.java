@@ -99,7 +99,7 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
             
             
             
-            log.info("MineJobs v5.0 Started Successfully!");
+            log.info("MineJobs v5.1 Started Successfully!");
         }
     }
     @Override public void onDisable(){

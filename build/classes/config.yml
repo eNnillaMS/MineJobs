@@ -25,6 +25,8 @@
 # required so long as useCmdEconomy is false.
 
 locale: EN
+updateChecks: true
+autoUpdate: true
 useSigns: false
 useCustoms: false
 useCmdEconomy: false
