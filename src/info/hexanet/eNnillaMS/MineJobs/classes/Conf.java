@@ -15,10 +15,12 @@ public class Conf {
     public boolean SpawnerMobPayout;
     public boolean UseCmdEconomy;
     public boolean DebugOutput;
+    public boolean checkForUpdates;
+    public boolean downloadUpdates;
     
     public Conf(String locale, boolean signs, boolean customs, String pklYN, double pklCash,
             boolean spawnerCash, Map<String, Integer> maxJobs, List<String> defaults, List<String> forced, boolean ecoYN,
-            double[] eco, boolean debugOutput){
+            double[] eco, boolean debugOutput, boolean check, boolean dl){
         Locale = locale;
         UseDeathLosses = pklYN;
         DefaultJobs = defaults;
@@ -31,6 +33,8 @@ public class Conf {
         SpawnerMobPayout = spawnerCash;
         UseCmdEconomy = ecoYN;
         DebugOutput = debugOutput;
+        checkForUpdates = check;
+        downloadUpdates = dl;
     }
     
     public YamlConfiguration getYaml(){
@@ -47,6 +51,8 @@ public class Conf {
         temp.set("defaultJobs", DefaultJobs);
         temp.set("forcedJobs", ForcedJobs);
         temp.set("debugOutput", DebugOutput);
+        temp.set("updateChecks", checkForUpdates);
+        temp.set("autoUpdate", downloadUpdates);
         if (UseCmdEconomy){
             temp.set("CmdEconomy.getJob", Eco[0]);
             temp.set("CmdEconomy.quitJob", Eco[1]);

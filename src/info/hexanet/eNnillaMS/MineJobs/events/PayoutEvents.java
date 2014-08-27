@@ -5,8 +5,13 @@ import info.hexanet.eNnillaMS.MineJobs.classes.Job;
 import info.hexanet.eNnillaMS.MineJobs.classes.Lang;
 import info.hexanet.eNnillaMS.MineJobs.classes.Player;
 import info.hexanet.eNnillaMS.MineJobs.classes.SignC;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -51,8 +56,8 @@ public class PayoutEvents implements Listener {
                     if (!event.isCancelled() && value != null && job.Worlds.contains(event.getBlock().getWorld().getName())){
                         Double mult = job.Tools.get(event.getPlayer().getItemInHand().getType().toString());
                         if (mult == null) mult = 1.00;
-                        if (job.IsCustom && !event.getBlock().hasMetadata("MJ:".concat(event.getPlayer().getName()))) Main.econ.withdrawPlayer(job.Owner, value * mult);
-                        if (!event.getBlock().hasMetadata("MJ:".concat(event.getPlayer().getName()))) Main.econ.depositPlayer(plyr.getName(), value * mult);
+                        if (job.IsCustom && !event.getBlock().hasMetadata("MJ:".concat(event.getPlayer().getName()))) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value * mult);
+                        if (!event.getBlock().hasMetadata("MJ:".concat(event.getPlayer().getName()))) Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value * mult);
                         if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[0].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getBlock().getType().toString() + "#" + event.getBlock().getData()));
                     }
                 }
@@ -81,8 +86,8 @@ public class PayoutEvents implements Listener {
                         if (!event.isCancelled() && pay == true){
                             Double value = job.Place.get(block);
                             if (value == null) value = job.Place.get(block + data);
-                            if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
-                            Main.econ.depositPlayer(plyr.getName(), value);
+                            if (job.IsCustom) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value);
+                            Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value);
                             if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[1].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", block + data));
                         }
                     }
@@ -102,13 +107,13 @@ public class PayoutEvents implements Listener {
                     if(job != null && job.Worlds.contains(event.getEntity().getKiller().getWorld().getName())){
                         String ename = event.getEntityType().toString();
                         if (ename.equalsIgnoreCase("PLAYER")){
-                            ename = event.getEntity().getType().getName();
+                            UUID temp = event.getEntity().getUniqueId();
                             switch (Config.UseDeathLosses) {
                                 case "always":
-                                    Main.econ.withdrawPlayer(ename, Config.DeathLoss);
+                                    Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(temp), Config.DeathLoss);
                                     break;
                                 case "job":
-                                    if (job.DeathLosses) Main.econ.withdrawPlayer(ename, Config.DeathLoss);
+                                    if (job.DeathLosses) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(temp), Config.DeathLoss);
                                     break;
                                 case "never":
                                 default:
@@ -118,8 +123,8 @@ public class PayoutEvents implements Listener {
                         Double value = job.Mobs.get(ename);
                         if(value != null){
                             if (!event.getEntity().hasMetadata("MJ:FAKE") || Config.SpawnerMobPayout){
-                                Main.econ.depositPlayer(plyr.getName(), value);
-                                if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
+                                Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value);
+                                if (job.IsCustom) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value);
                                 plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[2].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", ename));
                             } /*HERE - not sure why this is here anymore - PREv4.0.0*/
                         }
@@ -138,8 +143,8 @@ public class PayoutEvents implements Listener {
                     Job job = Jobs.get(jobS);
                     if (!event.isCancelled() && job != null && job.Fish.containsKey(event.getCaught().getType().toString()) && job.Worlds.contains(event.getPlayer().getWorld().getName())){
                         Double value = job.Fish.get(event.getCaught().getType().toString());
-                        Main.econ.depositPlayer(plyr.getName(), value);
-                        if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
+                        Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value);
+                        if (job.IsCustom) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value);
                         event.getPlayer().sendMessage(ChatColor.GOLD + Lang.ActionSuccess[3].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getCaught().getType().toString()));
                     }
                 }
@@ -161,8 +166,8 @@ public class PayoutEvents implements Listener {
                             event.setCancelled(true);
                             return;
                         }
-                        Main.econ.depositPlayer(plyr.getName(), value);
-                        if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
+                        Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value);
+                        if (job.IsCustom) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value);
                         if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[4].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getCurrentItem().getType().toString() + "#" + event.getCurrentItem().getData()));
                     }
                 }
@@ -174,7 +179,15 @@ public class PayoutEvents implements Listener {
         try {
             List<MetadataValue> wop = event.getBlock().getMetadata(Main.blockOwnerKey);
             String playerName = wop.get(0).asString();
-            for (org.bukkit.entity.Player p:Main.getServer().getOnlinePlayers()){
+            Collection<?> playersOnline = new ArrayList<>();
+            try {
+                if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class)
+                    playersOnline = ((Collection<?>)Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                else
+                    playersOnline = Arrays.asList((org.bukkit.entity.Player[])Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+            }
+            catch (NoSuchMethodException | java.lang.reflect.InvocationTargetException | IllegalAccessException ex){} // can still never happen
+            for (org.bukkit.entity.Player p:(Collection<? extends org.bukkit.entity.Player>) playersOnline){
                 if (p.getName().equals(playerName)) plyr = p;
             }
         } catch (Exception e){ return; }
@@ -188,8 +201,8 @@ public class PayoutEvents implements Listener {
                         Double value = job.Smelt.get(event.getSource().getType().toString());
                         if (value == null) value = job.Smelt.get(event.getSource().getType().toString() + "#" + event.getSource().getData());
                         if(!event.isCancelled() && value != null && job.Worlds.contains(event.getBlock().getWorld().getName())){
-                           Main.econ.depositPlayer(plyr.getName(), value);
-                           if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
+                           Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value);
+                           if (job.IsCustom) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value);
                            if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[6].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getSource().getType().toString() + "#" + event.getSource().getData()));
                         }
                     }
@@ -201,8 +214,15 @@ public class PayoutEvents implements Listener {
         org.bukkit.entity.Player plyr = null;
         try {
             List<MetadataValue> wop = event.getBlock().getMetadata(Main.blockOwnerKey);
-            String playerName = wop.get(0).asString();
-            for (org.bukkit.entity.Player p:Main.getServer().getOnlinePlayers()){
+            String playerName = wop.get(0).asString();Collection<?> playersOnline = new ArrayList<>();
+            try {
+                if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class)
+                    playersOnline = ((Collection<?>)Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                else
+                    playersOnline = Arrays.asList((org.bukkit.entity.Player[])Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+            }
+            catch (NoSuchMethodException | java.lang.reflect.InvocationTargetException | IllegalAccessException ex){} // can still never happen
+            for (org.bukkit.entity.Player p:(Collection<? extends org.bukkit.entity.Player>) playersOnline){
                 if (p.getName().equals(playerName)) plyr = p;
             }
         } catch (Exception e){ return; }
@@ -216,8 +236,8 @@ public class PayoutEvents implements Listener {
                         Double value = job.Brew.get(event.getContents().getIngredient().getType().toString());
                         if (value == null) value = job.Brew.get(event.getContents().getIngredient().getType().toString() + "#" + event.getContents().getIngredient().getData());
                         if(!event.isCancelled() && value != null && job.Worlds.contains(event.getBlock().getWorld().getName())){
-                           Main.econ.depositPlayer(plyr.getName(), value);
-                           if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value);
+                           Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value);
+                           if (job.IsCustom) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value);
                            if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[7].replace("%VALUE%", String.valueOf(value)).replace("%ITEM%", event.getContents().getIngredient().getType().toString() + "#" + event.getContents().getIngredient().getData()));
                         }
                     }
@@ -233,8 +253,8 @@ public class PayoutEvents implements Listener {
                 Job job = Jobs.get(jobS);
                 if (!event.isCancelled() && job != null && job.EnchantEnabled && job.Worlds.contains(event.getEnchantBlock().getWorld().getName())){
                     Double value = job.EnchantPay;
-                    Main.econ.depositPlayer(plyr.getName(), value * event.getExpLevelCost());
-                    if (job.IsCustom) Main.econ.withdrawPlayer(job.Owner, value * event.getExpLevelCost());
+                    Main.econ.depositPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), value * event.getExpLevelCost());
+                    if (job.IsCustom) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(new UUID(0,0).fromString(job.Owner)), value * event.getExpLevelCost());
                     if (Config.DebugOutput) plyr.sendMessage(ChatColor.GOLD + Lang.ActionSuccess[7].replace("%NUM%", String.valueOf(event.getExpLevelCost())).replace("%VALUE%", String.valueOf(event.getExpLevelCost() * value)));
                 }
             }

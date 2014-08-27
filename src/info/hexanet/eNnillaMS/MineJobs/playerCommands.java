@@ -5,6 +5,7 @@ import info.hexanet.eNnillaMS.MineJobs.classes.Lang;
 import info.hexanet.eNnillaMS.MineJobs.classes.Player;
 import info.hexanet.eNnillaMS.MineJobs.classes.SignC;
 import java.util.Map;
+import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -66,24 +67,24 @@ public class playerCommands implements CommandExecutor{
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null){
                 if (job.AddPlayerCountCheck(Players)){
-                    Player player = Players.get(sender.getName());
-                    if (args.length == 3) player = Players.get(args[2]);
+                    Player player = Players.get(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString());
+                    if (args.length == 3) player = Players.get(Main.getServer().getPlayer(args[2]).getUniqueId().toString());
                     if (player != null){
-                        org.bukkit.entity.Player plyr = Main.getServer().getPlayer(player.Name);
+                        org.bukkit.entity.Player plyr = Main.getServer().getPlayer(player.UUID);
                         if ((player.Jobs.size() < Config.getJobLimit(player, plyr)) || Config.getJobLimit(player, plyr) == 0){
                             if (!player.Jobs.contains(job.Name)){
                                 if (!job.IsCustom || !job.Locked || player.Invites.contains(job.Name)){
-                                    if ((player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob")) || (!player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.getJob.other"))){
-                                        if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[0]);
+                                    if ((player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString()) && sender.hasPermission("MineJobs.player.getJob")) || (!player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString()) && sender.hasPermission("MineJobs.player.getJob.other"))){
+                                        if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(player.UUID), Config.Eco[0]);
                                         if (player.Invites.contains(job.Name)) player.Invites.remove(job.Name);
                                         player.Jobs.add(job.Name);
                                         Main.saveConfigs(sender);
-                                        if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][1] + player.Jobs);
-                                        else sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][2].replace("%PLAYER%", player.Name) + player.Jobs);
+                                        if (player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString())) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][1] + player.Jobs);
+                                        else sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[0][2].replace("%PLAYER%", Main.getServer().getPlayer(player.UUID).getName()) + player.Jobs);
                                     } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
-                                } else if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][6]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][9].replace("%PLAYER%", player.Name));
-                            } else if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][5]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][8].replace("%PLAYER%", player.Name));
-                        } else if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][4]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][7].replace("%PLAYER%", player.Name));
+                                } else if (player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][6]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][9].replace("%PLAYER%", Main.getServer().getPlayer(player.UUID).getName()));
+                            } else if (player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][5]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][8].replace("%PLAYER%", Main.getServer().getPlayer(player.UUID).getName()));
+                        } else if (player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][4]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][7].replace("%PLAYER%", Main.getServer().getPlayer(player.UUID).getName()));
                     } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[10]);
                 } else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[0][3]);
             } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
@@ -93,26 +94,26 @@ public class playerCommands implements CommandExecutor{
         if (args.length < 2 || args.length > 3 || args[1].equalsIgnoreCase("?")){
             sender.sendMessage(Lang.CommandOutput[1][0]);
         } else {
-            Player player = Players.get(sender.getName());
-            if (args.length == 3) player = Players.get(args[2]);
+            Player player = Players.get(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString());
+            if (args.length == 3) player = Players.get(Main.getServer().getPlayer(args[2]).getUniqueId().toString());
             if (player != null){
                 if (player.Jobs.contains(args[1].toUpperCase())){
                     if (!Config.ForcedJobs.contains(args[1].toUpperCase())){
-                        if ((player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.quitJob")) || (!player.Name.equals(sender.getName()) && sender.hasPermission("MineJobs.player.quitJob.other"))){
-                            if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[1]);
+                        if ((player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString()) && sender.hasPermission("MineJobs.player.quitJob")) || (!player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString()) && sender.hasPermission("MineJobs.player.quitJob.other"))){
+                            if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(player.UUID), Config.Eco[1]);
                             player.Jobs.remove(args[1].toUpperCase());
                             Main.saveConfigs(sender);
-                            if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[1][1].replace("%JOB%", args[1].toUpperCase()));
-                            else sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[1][2].replace("%JOB%", args[1].toUpperCase()).replace("%PLAYER%", player.Name));
+                            if (player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString())) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[1][1].replace("%JOB%", args[1].toUpperCase()));
+                            else sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[1][2].replace("%JOB%", args[1].toUpperCase()).replace("%PLAYER%", Main.getServer().getPlayer(player.UUID).getName()));
                         } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
                     } else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[1][5]);
-                } else if (player.Name.equals(sender.getName())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[1][3]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[1][4].replace("%PLAYER%", player.Name));
+                } else if (player.Name.equals(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString())) sender.sendMessage(ChatColor.RED + Lang.CommandOutput[1][3]); else sender.sendMessage(ChatColor.RED + Lang.CommandOutput[1][4].replace("%PLAYER%", Main.getServer().getPlayer(player.UUID).getName()));
             } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[10]);
         }
     }
     public void listJobs(CommandSender sender, Command cmd, String label, String[] args){
         if (sender.hasPermission("MineJobs.player.listJobs")){
-            Player plyr = Players.get(sender.getName());
+            Player plyr = Players.get(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString());
             String plyrJobs = plyr.Jobs.toString().replace("[", "").replace("]", "");
             String plyrInvs = plyr.Invites.toString().replace("[", "").replace("]", "");
             String jobs = "";
@@ -123,8 +124,8 @@ public class playerCommands implements CommandExecutor{
                 } else jobs += ChatColor.GOLD + j.getValue().Name + "  ";
             }
             String jObs = "", p;
-            if (Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)) != 0){
-                int x = Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)), y = plyr.Jobs.size(), z = (int) y / x * 100;
+            if (Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.UUID)) != 0){
+                int x = Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.UUID)), y = plyr.Jobs.size(), z = (int) y / x * 100;
                 if (z <= 25) p = ChatColor.GREEN + String.valueOf(y) + "/" + String.valueOf(x);
                 else if (z > 25 && z <= 75) p = ChatColor.BLUE + String.valueOf(y) + "/" + String.valueOf(x);
                 else p = ChatColor.RED + String.valueOf(y) + "/" + String.valueOf(x);
@@ -145,11 +146,11 @@ public class playerCommands implements CommandExecutor{
     }
     public void currentJobs(CommandSender sender, Command cmd, String label, String[] args){
         if (sender.hasPermission("MineJobs.player.listJobs")){
-            Player plyr = Players.get(sender.getName());
+            Player plyr = Players.get(Main.getServer().getPlayer(sender.getName()).getUniqueId().toString());
             String plyrJobs = plyr.Jobs.toString().replace("[", "").replace("]", "");
             String jObs = "", p;
-            if (Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)) != 0){
-                int x = Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.Name)), y = plyr.Jobs.size(), z = (int) y / x * 100;
+            if (Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.UUID)) != 0){
+                int x = Config.getJobLimit(plyr, Main.getServer().getPlayer(plyr.UUID)), y = plyr.Jobs.size(), z = (int) y / x * 100;
                 if (z <= 25) p = ChatColor.GREEN + String.valueOf(y) + "/" + String.valueOf(x);
                 else if (z > 25 && z <= 75) p = ChatColor.BLUE + String.valueOf(y) + "/" + String.valueOf(x);
                 else p = ChatColor.RED + String.valueOf(y) + "/" + String.valueOf(x);
@@ -173,7 +174,7 @@ public class playerCommands implements CommandExecutor{
                             fi = ChatColor.GREEN + "", to = ChatColor.GREEN + "", cr = ChatColor.GREEN + "", sm = ChatColor.GREEN + "",
                             po = ChatColor.GREEN + "", en = ChatColor.GREEN + "";
                     if (job.IsCustom) n = ChatColor.BLUE + job.Name; else n = ChatColor.GOLD + job.Name;
-                    if (job.IsCustom) o = " (" + Lang.CommandOutput[3][2] + job.Owner + ")";
+                    if (job.IsCustom) o = " (" + Lang.CommandOutput[3][2] + Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName() + ")";
                     if (job.Locked) l = ChatColor.RED + "true ";
                     if ((Config.UseDeathLosses.equals("job") && job.DeathLosses) || Config.UseDeathLosses.equals("always")) d = ChatColor.GOLD + String.valueOf(Config.DeathLoss);
                     if (job.MaxPlayers != 0){

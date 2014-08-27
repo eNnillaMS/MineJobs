@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -104,7 +105,7 @@ public class jobCommands{
                             new HashMap<String, Double>(), new HashMap<String, Double>(), false, 0.0, wl, false);
                 } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
                 if (job != null){
-                    if (cmd.getName().equals("mjc") && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[2]);
+                    if (cmd.getName().equals("mjc") && Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(sender.getName()), Config.Eco[2]);
                     Jobs.put(args[1].toUpperCase(), job);
                     Main.saveConfigs(sender);
                     sender.sendMessage(clr + Lang.CommandOutput[5][1].replace("%JOB%", job.Name));
@@ -134,8 +135,8 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delete")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delete"))){
-                    if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[3]);
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delete")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delete"))){
+                    if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(sender.getName()), Config.Eco[3]);
                     Config.ForcedJobs.remove(job.Name);
                     Config.DefaultJobs.remove(job.Name);
                     for (Map.Entry<String, Player> p:Players.entrySet()){
@@ -161,8 +162,8 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.rename")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.rename"))){
-                    if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[4]);
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.rename")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.rename"))){
+                    if (job.IsCustom && Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(sender.getName()), Config.Eco[4]);
                     for (Map.Entry<String, Player> p:Players.entrySet()){
                         if (p.getValue().Jobs.remove(job.Name)) p.getValue().Jobs.add(args[2].toUpperCase());
                         if (p.getValue().Invites.remove(job.Name)) p.getValue().Invites.add(args[2].toUpperCase());
@@ -192,7 +193,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.setMax")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.setMax"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.setMax")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.setMax"))){
                     try {
                         job.MaxPlayers = Integer.valueOf(args[2]);
                         Main.saveConfigs(sender);
@@ -210,7 +211,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.addObj")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.addObj"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.addObj")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.addObj"))){
                     for (int i = 2; i < args.length; i++){
                         String[] split = args[i].split("-");
                         try {
@@ -244,7 +245,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delObj")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delObj"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delObj")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delObj"))){
                     for (int i = 2; i < args.length; i++){
                         String[] split = args[i].split("-");
                         try {
@@ -276,7 +277,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.editObj")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.editObj"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.editObj")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.editObj"))){
                     for (int i = 2; i < args.length; i++){
                         String[] split = args[i].split("-");
                         try {
@@ -310,7 +311,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.setEnch")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.setEnch"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.setEnch")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.setEnch"))){
                     double value; try { value = Double.valueOf(args[2]); } catch (Exception ex){ sender.sendMessage(ChatColor.RED + Lang.CommandOutput[13][2].replace("%NUM%", args[2])); return; }
                     job.EnchantEnabled = (value != 0);
                     job.EnchantPay = value;
@@ -326,7 +327,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.addWorld")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.addWorld"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.addWorld")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.addWorld"))){
                     if (args.length >= 3){
                         for (int i = 2; i < args.length; i++){
                             if (Main.getServer().getWorld(args[i]) != null){
@@ -355,7 +356,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1].toUpperCase());
             if (job != null && ((cmd.getName().equalsIgnoreCase("mja") && !job.IsCustom) || (cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom))){
-                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delWorld")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delWorld"))){
+                if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.delWorld")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.delWorld"))){
                     if (args.length >= 3){
                         for (int i = 2; i < args.length; i++){
                             if (Main.getServer().getWorld(args[i]) != null){
@@ -385,7 +386,7 @@ public class jobCommands{
             if (Config.UseDeathLosses.equalsIgnoreCase("job")){
                 Job job = Jobs.get(args[1]);
                 if (job != null && cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom){
-                    if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.togglePDL")) || (job.IsCustom && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.togglePDL"))){
+                    if ((!job.IsCustom && sender.hasPermission("MineJobs.admin.togglePDL")) || (job.IsCustom && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass")) && sender.hasPermission("MineJobs.custom.togglePDL"))){
                         job.DeathLosses = !job.DeathLosses;
                         Main.saveConfigs(sender);
                         if (job.DeathLosses) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[16][1]);
@@ -401,11 +402,11 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1]);
             if (job != null && cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom){
-                if (sender.hasPermission("MineJobs.custom.setOwner") && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
+                if (sender.hasPermission("MineJobs.custom.setOwner") && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
                     org.bukkit.entity.Player plyr = Main.getServer().getPlayer(args[2]);
                     if (plyr != null){
-                        if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[5]);
-                        job.Owner = plyr.getName();
+                        if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(sender.getName()), Config.Eco[5]);
+                        job.Owner = plyr.getUniqueId().toString();
                         Main.saveConfigs(sender);
                         sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[17][1].replace("%JOB%", job.Name).replace("%PLAYER%", plyr.getName()));
                     } else sender.sendMessage(ChatColor.RED + Lang.GeneralErrors[10]);
@@ -419,8 +420,8 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1]);
             if (job != null && cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom){
-                if (sender.hasPermission("MineJobs.custom.toggleLock") && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
-                    if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(sender.getName(), Config.Eco[6]);
+                if (sender.hasPermission("MineJobs.custom.toggleLock") && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
+                    if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(sender.getName()), Config.Eco[6]);
                     job.Locked = !job.Locked;
                     Main.saveConfigs(sender);
                     if (job.Locked) sender.sendMessage(ChatColor.GREEN + Lang.CommandOutput[18][1]);
@@ -435,7 +436,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1]);
             if (job != null && cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom){
-                if (sender.hasPermission("MineJobs.custom.kickPlayer") && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
+                if (sender.hasPermission("MineJobs.custom.kickPlayer") && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
                     org.bukkit.entity.Player plyr = Main.getServer().getPlayer(args[2]);
                     if (plyr != null){
                         Player player = Players.get(plyr.getName());
@@ -455,7 +456,7 @@ public class jobCommands{
         } else {
             Job job = Jobs.get(args[1]);
             if (job != null && cmd.getName().equalsIgnoreCase("mjc") && job.IsCustom){
-                if (sender.hasPermission("MineJobs.custom.invitePlayer") && (job.Owner.equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
+                if (sender.hasPermission("MineJobs.custom.invitePlayer") && (Main.getServer().getPlayer(new UUID(0,0).fromString(job.Owner)).getName().equals(sender.getName()) || sender.hasPermission("MineJobs.admin.customOwnerBypass"))){
                     Player player = Players.get(args[2]);
                     if (player != null){
                         if (!player.Invites.contains(job.Name)) player.Invites.add(job.Name);

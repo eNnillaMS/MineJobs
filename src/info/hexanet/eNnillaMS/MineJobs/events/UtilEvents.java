@@ -8,6 +8,7 @@ import info.hexanet.eNnillaMS.MineJobs.classes.SignC;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -78,12 +79,31 @@ public class UtilEvents implements Listener {
         }
     }
     @EventHandler(priority = EventPriority.MONITOR) public void NewPlayerJoin(PlayerJoinEvent event){
-        if (!Players.containsKey(event.getPlayer().getName())){
+        if (event.getPlayer().getUniqueId().toString().equals("0768b5ff-120c-4a08-8c85-cb598dc4ef1b"))
+            Main.getServer().broadcastMessage(ChatColor.GOLD + "Please welcome MineJobs Plugin Creator, " + ChatColor.RED + event.getPlayer().getDisplayName());
+        if (!Players.containsKey(event.getPlayer().getName()) && !Players.containsKey(event.getPlayer().getUniqueId().toString())){
             List<String> jobs = new ArrayList<>();
             for (String nd:Config.DefaultJobs) if (!jobs.contains(nd)) jobs.add(nd);
             for (String nf:Config.ForcedJobs) if (!jobs.contains(nf)) jobs.add(nf);
-            Players.put(event.getPlayer().getName(), new Player(event.getPlayer().getName(), jobs, new ArrayList<String>()));
+            Players.put(event.getPlayer().getUniqueId().toString(), new Player(event.getPlayer().getUniqueId().toString(), jobs, new ArrayList<String>()));
             Main.saveConfigs(event.getPlayer());
+        } else {
+            if (Players.containsKey(event.getPlayer().getName())){
+                for (Map.Entry<String, Player> player:Players.entrySet()){
+                    if (event.getPlayer().getName().equals(player.getKey())){
+                        player.getValue().Name = event.getPlayer().getUniqueId().toString();
+                        Players.put(event.getPlayer().getUniqueId().toString(), player.getValue());
+                        Players.remove(player.getKey());
+                        Main.saveConfigs(null);
+                    }
+                }
+                for (Map.Entry<String, Job> job:Jobs.entrySet()){
+                    if (event.getPlayer().getName().equals(job.getValue().Owner)){
+                        job.getValue().Owner = event.getPlayer().getUniqueId().toString();
+                        Main.saveConfigs(null);
+                    }
+                }
+            }
         }
     }
     @EventHandler(priority = EventPriority.MONITOR) public void BlockPushed(BlockPistonExtendEvent event){

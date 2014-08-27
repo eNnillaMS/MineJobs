@@ -196,7 +196,8 @@ public class Lang {
                 get(lang, "mainErrors.PlayerNotFound"),//10
                 get(lang, "mainErrors.BadType"),
                 get(lang, "mainErrors.BadArg"),
-                get(lang, "mainErrors.WorldNotFound")
+                get(lang, "mainErrors.WorldNotFound"),
+                get(lang, "mainErrors.SignsDisabled")
             };
             ConfigErrors = new String[]{
                 get(lang, "configErrors.SaveFail"),//0
@@ -225,7 +226,9 @@ public class Lang {
                 get(lang, "configErrors.NoOwner"),
                 get(lang, "configErrors.BrokenSign"),
                 get(lang, "configErrors.CantLoadSigns"),//25
-                get(lang, "configErrors.BackupError")
+                get(lang, "configErrors.BackupError"),
+                get(lang, "configErrors.Updates1"),
+                get(lang, "configErrors.Updates2")
             };
         } catch (NullPointerException ex){
             throw ex;

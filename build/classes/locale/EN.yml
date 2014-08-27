@@ -154,7 +154,7 @@ commands:
         Success: "Plugin was successfully reloaded."
         Failed: "Plugin reloading failed..."
 mainErrors:
-    NoVault: "[MineJobs] - Disabled due to dependancy (Vault) not being found!"
+    NoVault: "[MineJobs] - Disabled due to missing dependancy!"
     CustomsDisabledWarning: "Warning! Plugin has custom jobs diabled!"
     NoPermissions: "Error! You don't have permission to do that!"
     JobNotFound: "Error! Job does not exist! Use '/mj listJobs' to view jobs!"
@@ -168,6 +168,7 @@ mainErrors:
     PlayerNotFound: "Error! Player not found! Note that player names are case sensitive."
     BadType: "Error! Argument %ARG% uses bad type!"
     BadArg: "Error! Argument %ARG% is malformed!"
+    SignsDisabled: "Error! %PLAYER% is trying to create a JobSign, but they are disabled in the MineJobs Config file!"
 configErrors:
     SaveFail: "\n    SEVERE: MineJobs: Could not save config. Try command again; if fails persist, contact eNnillaMS on BukkitDev for assistance."
     BadLangFile: "\n    Error! Your language file (mainconfig locale) is invalid. Loading English."
@@ -196,3 +197,5 @@ configErrors:
     BrokenSign: "\n    Error loading sign properties for sign %SIGN%. Backing up file and ignoring."
     CantLoadSigns: "\n    Severe error(s) loading SIGNS.YML. Backing up broken file and assuming no signs in file."
     BackupError: "\n    Your Operating System has encountered an IO exception writing %FILE% to disk."
+    Updates1: "\n    The value for updateChecks was not recognized in config.yml; backing up file and solving errors."
+    Updates2: "\n    The value for autoUpdate was not recognized in config.yml; backing up file and solving errors."

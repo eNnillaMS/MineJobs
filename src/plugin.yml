@@ -1,9 +1,9 @@
 name: MineJobs
 main: info.hexanet.eNnillaMS.MineJobs.MineJobs
-version: 4.0.0
+version: 5.0
 depend: [Vault]
 description: This is a complete jobs economy plugin for Minecraft. See http://dev.bukkit.org/bukkit-plugins/minejobs/ for more information.
-author: eNnillaMS
+author: eNnillaMS (RedexProGamma)
 website: http://dev.bukkit.org/bukkit-plugins/minejobs/
 commands:
   minejobs:

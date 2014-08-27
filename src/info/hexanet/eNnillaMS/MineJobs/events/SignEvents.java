@@ -32,28 +32,24 @@ public class SignEvents implements Listener {
         Signs = main.Signs;
     }
     @EventHandler(priority = EventPriority.MONITOR) public void SignCreate(SignChangeEvent event){
-        if (Config.UseSigns){
-            String type = "";
-            if (event.getLine(0).equalsIgnoreCase("[getajob]")) type = "GET";
-            else if (event.getLine(0).equalsIgnoreCase("[quitajob]")) type = "QUIT";
-            if (!type.equals("")){
-                org.bukkit.entity.Player plyr = event.getPlayer();
-                if ((type.equals("GET") && plyr.hasPermission("MineJobs.signs.makeGetSign")) || (type.equals("QUIT") && plyr.hasPermission("MineJobs.signs.makeQuitSign"))){
-                    Job job = Jobs.get(event.getLine(2).toUpperCase());
-                    if (job != null){
-                        if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(event.getPlayer().getName(), Config.Eco[7]);
-                        if (type.equals("GET")) event.setLine(0, ChatColor.GREEN + "[Get A Job]");
-                        else event.setLine(0, ChatColor.RED + "[Quit A Job]");
-                        event.setLine(1, "");
-                        event.setLine(2, job.Name.toUpperCase());
-                        event.setLine(3, "");
-                        Signs.put(event.getBlock().getLocation(), new SignC(event.getBlock().getLocation(), type, job.Name));
-                        Main.saveConfigs(plyr);
-                        plyr.sendMessage(ChatColor.GREEN + Lang.ActionSuccess[8]);
-                    } else plyr.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
-                } else plyr.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
-            }
-        }
+        if (Config.UseSigns && (event.getLine(0).equalsIgnoreCase("[getajob]") || event.getLine(0).equalsIgnoreCase("[quitajob]"))){
+            String type = (event.getLine(0).equalsIgnoreCase("[getajob]")) ? "GET" : "QUIT";
+            org.bukkit.entity.Player plyr = event.getPlayer();
+            if ((type.equals("GET") && plyr.hasPermission("MineJobs.signs.makeGetSign")) || (type.equals("QUIT") && plyr.hasPermission("MineJobs.signs.makeQuitSign"))){
+                Job job = Jobs.get(event.getLine(2).toUpperCase());
+                if (job != null){
+                    if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(plyr.getUniqueId()), Config.Eco[7]);
+                    if (type.equals("GET")) event.setLine(0, ChatColor.GREEN + "[Get A Job]");
+                    else event.setLine(0, ChatColor.RED + "[Quit A Job]");
+                    event.setLine(1, "");
+                    event.setLine(2, job.Name.toUpperCase());
+                    event.setLine(3, "");
+                    Signs.put(event.getBlock().getLocation(), new SignC(event.getBlock().getLocation(), type, job.Name));
+                    Main.saveConfigs(plyr);
+                    plyr.sendMessage(ChatColor.GREEN + Lang.ActionSuccess[8]);
+                } else plyr.sendMessage(ChatColor.RED + Lang.GeneralErrors[3]);
+            } else plyr.sendMessage(ChatColor.RED + Lang.GeneralErrors[2]);
+        } else Main.getLogger().severe(Lang.GeneralErrors[14].replace("%PLAYER%", event.getPlayer().getName()));
     }
     @EventHandler(priority = EventPriority.MONITOR) public void SignInteract(PlayerInteractEvent event){
         if (Config.UseSigns){
@@ -78,7 +74,7 @@ public class SignEvents implements Listener {
             SignC sign = Signs.get(loc);
             if ((event.getBlock().getType().toString().equals("SIGN") || event.getBlock().getType().toString().equals("SIGN_POST")) && sign != null){
                 if (event.getPlayer().hasPermission("MineJobs.signs.breakSign") && !event.isCancelled()){
-                    if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(event.getPlayer().getName(), Config.Eco[8]);
+                    if (Config.UseCmdEconomy) Main.econ.withdrawPlayer(Main.getServer().getOfflinePlayer(event.getPlayer().getUniqueId()), Config.Eco[8]);
                     Signs.remove(loc);
                     event.getPlayer().sendMessage(ChatColor.GREEN + Lang.ActionSuccess[9]);
                 } else {

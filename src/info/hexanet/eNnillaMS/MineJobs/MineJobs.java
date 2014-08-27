@@ -1,4 +1,7 @@
 package info.hexanet.eNnillaMS.MineJobs;
+import info.hexanet.eNnillaMS.MineJobs.Metrics.Graph;
+import info.hexanet.eNnillaMS.MineJobs.Updater.UpdateResult;
+import info.hexanet.eNnillaMS.MineJobs.Updater.UpdateType;
 import info.hexanet.eNnillaMS.MineJobs.classes.Conf;
 import info.hexanet.eNnillaMS.MineJobs.classes.Job;
 import info.hexanet.eNnillaMS.MineJobs.classes.Lang;
@@ -12,10 +15,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -27,11 +32,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginLoader;
 public final class MineJobs extends JavaPlugin implements Listener, CommandExecutor{
     public static final Logger log = Logger.getLogger("Minecraft");
     public static Economy econ = null;
@@ -65,6 +70,36 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
             getCommand("mjc").setExecutor(this);
             setupPermissions();
             setupChat();
+            try {
+                Metrics metrics = new Metrics(this);
+                Graph JobGraph = metrics.createGraph("Number of Jobs available");
+                JobGraph.addPlotter(new Metrics.Plotter(){
+                    @Override
+                    public int getValue() {
+                        return Jobs.size();
+                    }
+                });
+                metrics.start();
+            } catch (IOException e) {}
+            log.info("[MineJobs] Checking for new versions..");
+            
+            
+            if (Config.checkForUpdates){
+                UpdateType g = (Config.downloadUpdates) ? UpdateType.DEFAULT : UpdateType.NO_DOWNLOAD;
+                Updater updater = new Updater(this, 67068, this.getFile(), g, true);
+                if (updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
+                    this.getLogger().info("[MineJobs] New version available! " + updater.getLatestName());
+                } else if (updater.getResult() == UpdateResult.NO_UPDATE) {
+                    this.getLogger().info("[MineJobs] Your plugin version is up to date. " + updater.getLatestName());
+                } else if (updater.getResult() == UpdateResult.SUCCESS) {
+                    this.getLogger().info("[MineJobs] New version has been downloaded and readied for use on next server start. " + updater.getLatestName());
+                }
+            }
+            
+            
+            
+            
+            log.info("MineJobs v5.0 Started Successfully!");
         }
     }
     @Override public void onDisable(){
@@ -190,6 +225,9 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
             boolean ecoYN; try { ecoYN = mainConf.getBoolean("UseCmdEconomy"); } catch (Exception ex){ ecoYN = false; backup[0] = 1; errors += Lang.ConfigErrors[6]; }
             double[] eco;
             Map<String, Integer> maxJobs = new HashMap<>(); try{ for (String k:mainConf.getConfigurationSection("maxJobsPerPlayer").getKeys(false)) maxJobs.put(k, mainConf.getInt("maxJobsPerPlayer." + k)); } catch (Exception ex){ maxJobs.put("default", 3); }
+             
+            boolean check; try { check = mainConf.getBoolean("updateChecks"); } catch (Exception ex){ check = true; backup[0] = 1; errors += Lang.ConfigErrors[27]; }
+            boolean dl; try { dl = mainConf.getBoolean("autoUpdate"); } catch (Exception ex){ dl = true; backup[0] = 1; errors += Lang.ConfigErrors[28]; }
             try {
                 if (ecoYN){
                     eco = new double[]{mainConf.getDouble("CmdEconomy.getJob"), mainConf.getDouble("CmdEconomy.quitJob"),
@@ -201,7 +239,7 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
             } catch (Exception ex){
                 eco = new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
             }
-            Config = new Conf(locale, signs, customs, pklYN, pklCash, spawnerCash, maxJobs, defaults, forced, ecoYN, eco, debugOutput);
+            Config = new Conf(locale, signs, customs, pklYN, pklCash, spawnerCash, maxJobs, defaults, forced, ecoYN, eco, debugOutput, check, dl);
         } catch (Exception ex){
             errors += Lang.ConfigErrors[13];
             run = false;
@@ -473,3 +511,6 @@ public final class MineJobs extends JavaPlugin implements Listener, CommandExecu
         }
     }
 }
+/*
+    Blocklist update?
+*/
